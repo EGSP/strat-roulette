@@ -1,0 +1,122 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <noloc>
+        <title>Effect Testing UI</title>
+    </noloc>
+    <!--<link href="bundle://boot/boot.css" rel="stylesheet" type="text/css" />-->
+    <link href="coui://ui/mods/mod.roulette/floatzone/strat.css" rel="stylesheet" type="text/css" />
+    <!--<script src="bundle://boot/boot.js" type="text/javascript"></script>-->
+</head>
+
+<body class="strat_body">
+    <div class="div_effect_dock border">
+  
+        <div><img id='strat_lock' src='' onclick="model.stratLockEvent()" class='strat_lock_icon' /></div>
+
+        <div><img id='strat_visible' src='' onclick="model.toggleStratUIExpanded()" class='visible_icon' /></div>
+     
+        <div id="strat_main" class="strat_main" data-bind="visible: stratUIExpanded">
+            <div class="div_effect_unit_cont">
+                
+                <div div class="strat_title">Strategy roulette</div>
+                <div id = "checkbox-container">
+                <loc>Naval Spawn</loc><div id = "sandbox-check"> <input type="checkbox"
+                    data-bind="checked: naval" /></div>
+                <loc>Hybrid Spawn</loc><div id = "sandbox-check"> <input type="checkbox"
+                    data-bind="checked: hybrid" /></div>
+                <loc>Orbital Map</loc><div id = "sandbox-check"> <input type="checkbox"
+                    data-bind="checked: orbital" /></div>
+                </div>
+                <div class="generate"><i>Generate</i></div>
+                <div class='generateStrat' id = "sandbox-check"><img id = "generateStrat" src='' onclick='model.generateStrategy()'/></div>
+                <h6 class="description"><i>Generated strategy below, for naval keep to the spirit. end game only applies if you get there</i></h6>
+                <div class="section_content" data-bind="visible: stratGenerated">
+                    <div class="section_wrapper overall_width">
+                        <div id="tab3" class="tab-pane" style="display: visible">
+                            <div id="new-game-right" class="col">
+                                <div class="col-padding">
+                                    
+                                        <h7 class="description"><i>Opening</i></h7>  <loc class="displayed_text" data-bind="text: openingName"/><br>
+                                       
+                                        <!-- ko foreach: openingFacs -->
+                                        <img style="height: 40px; width: 40px;" data-bind="attr: { src: 'coui://pa/units/' + $data.buildBar + '.png' }" />
+                                        <!-- /ko -->
+                                        <br>
+                                        <loc class="displayed_text" data-bind="text: openingFabsName"/>
+                                       
+
+                                </div>
+                              
+                                <div class="col-padding">
+                                    
+                                    <h7 class="stratTitles"><i>Earlygame(Pre T2)</i></h7><br>
+                                    <loc class="displayed_text" data-bind="text: earlyGame"/>
+
+                                </div>
+                                <div class="col-padding">
+                                    
+                                    <h7 class="stratTitles"><i>Midgame(Post T2)</i></h7><br>
+                                    <loc class="displayed_text" data-bind="text: midGame"/>
+
+                                </div>
+                                <div class="col-padding">
+                                    
+                                    <h7 class="stratTitles"><i>Endgame(After 2nd T2)</i></h7><br>
+                                    <loc class="displayed_text" data-bind="text: endGame"/>
+
+                                </div>
+                                <div class="col-padding">
+                                    
+                                    <h7 class="stratTitles"><i>Modifier</i></h7><br>
+                                    <loc class="displayed_text" data-bind="text: modifier"/>
+
+                                </div>
+                                <div class="col-padding">
+                                    
+                                    <h7 class="stratTitles"><i>First/Second T2</i></h7><br>
+                                    <loc class="displayed_text" data-bind="text: t2Choice"/>
+
+                                </div>
+                                <div class="col-padding">
+                                    
+                                    <h7 class="stratTitles"><i>Meme</i></h7><br>
+                                    <loc class="displayed_text" data-bind="text: meme"/>
+
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+
+</body>
+<script>
+    $("#generateStrat").attr("src", "coui://ui/mods/mod.roulette/img/generate.png");
+
+    ko.cleanNode(document.getElementById("strat_main"));
+    ko.applyBindings(stratModel, document.getElementById("strat_main"));
+
+    if (localStorage["frames_strat_frame_lockStatus"] == "true") {
+        $("#strat_lock").attr("src", "coui://ui/mods/mod.roulette/img/lock-icon.png");
+    } else  {
+        $("#strat_lock").attr("src", "coui://ui/mods/mod.roulette/img/unlock-icon.png");
+    }
+
+    if (stratUIExpanded() == true) {
+        $("#strat_visible").attr("src", "coui://ui/mods/mod.roulette/img/visible.png");
+    } else  {
+        $("#strat_visible").attr("src", "coui://ui/mods/mod.roulette/img/notVisible.png");
+       
+    }
+
+</script>
+
+</html>

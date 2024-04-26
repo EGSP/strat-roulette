@@ -1,0 +1,27 @@
+{
+    "context": "client",
+    "identifier": "com.pa.ferretmaster.strat-roulette-dev",
+    "display_name": "Strat Roulette",
+    "description": "At the start of the game gives you a random set of strategies",
+    "author": "Ferretmaster",
+    "version": "1.0",
+    "build": "115626",
+    "date": "2024-04-20",
+    "signature": "not yet implemented",
+    "forum": "",
+    "icon": "",
+    "priority": 100,
+    "category": [
+        "titans", "in-game","server"
+        
+    ],
+    
+    "scenes": {
+      "LiveGame_FloatZone": [
+          "coui://ui/mods/mod.roulette/floatzone/strat.js"
+      ]
+  },
+  "dependencies": [
+  "com.pa.raevn.rfloatframe"
+  ]
+}
