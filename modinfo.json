@@ -1,11 +1,11 @@
 {
     "context": "client",
-    "identifier": "com.pa.ferretmaster.strat-roulette",
+    "identifier": "com.pa.ferretmaster.strat-roulette-dev",
     "display_name": "Strat Roulette",
     "description": "Adds an ingame panel that lets you generate a random strategy, intended for 1v1",
     "author": "Ferretmaster",
     "version": "1.0",
-    "build": "115626",
+    "build": "120773",
     "date": "2024-04-28",
     "signature": "not yet implemented",
     "forum": "https://steamcommunity.com/app/386070/discussions/0/4349990638025616760/",
