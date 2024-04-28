@@ -62,7 +62,7 @@
 
 
 .div_effect_dock {
-    padding-top:6px;
+    padding-top:0px;
     font-size: 200%;
     box-shadow:0px 0px 5px #000;
 
@@ -74,7 +74,7 @@
 }
 
 .div_effect_dock.detach {
-    margin-top: 5px;
+    margin-top: 0px;
     
 }
 
@@ -107,21 +107,30 @@
 
 th, td {
     padding-left: 0px;
-    padding-top: 10px;
+    padding-top: 2px;
     padding-right: 10px;
     white-space: nowrap;
   }
 
 .description{
     color: rgb(82, 224, 243);
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+    margin-top: 5px;
     font-size: 16px;
 }
 
 .generate{
-    color: rgb(214, 68, 10);
+    color: rgb(214, 109, 10);
     text-shadow: 0px 0px 10px #000000;font-size: 26px;
-    font-size: 22px;
+    font-size: 20px;
+}
+
+.total-difficulty{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: rgb(255, 0, 0);
+    text-shadow: 0px 0px 10px #000000;font-size: 26px;
+    font-size: 18px;
 }
   
 .Warning{
@@ -136,17 +145,33 @@ th, td {
 }
 
 .displayed_text{
-    padding-top: 100px;
+    padding-top: 10px;
     font-size: 16px;
     font-weight: bold;
   
     color: rgb(6, 255, 234)!important;
 }
 
+
+.displayed_difficulty{
+    font-size: 14px;
+    padding: 0px;
+    color: rgb(228, 188, 13)!important;
+}
+
 .strat_title{
     font-size: 30px;
     color: rgb(206, 93, 17)!important;
 }
+
+.sandbox-check-hard{ 
+    font-size: 12px;
+    text-align: left;
+    word-wrap: normal;
+    color: #ff6c0b;
+    text-shadow: 0px 0px 10px #ffffff;font-size: 16px;
+}
+
 
 #checkbox-container{ 
     font-size: 12px;
@@ -159,13 +184,12 @@ th, td {
 #generateStrat {
 
     width: 80px;
-    height: auto;
+    height: 80px;
     font-size: 12px;
   
   }
   .generateStrat {
     height: auto;
-  
     align-items: center;
     bottom: 1px;
     font-size: 16px;
@@ -174,7 +198,7 @@ th, td {
   .stratTitles{
     color: rgb(82, 243, 154);
     margin-bottom: 10px;
-    padding-top: 10px;
+    padding-top: 2px;
     font-size: 18px;
   }
 
@@ -185,16 +209,6 @@ th, td {
     border-color: #000;
   }
 
-  .icn-spinner {
-    animation: spin-animation 0.5s infinite;
-    display: inline-block;
-  }
+
+
   
-  @keyframes spin-animation {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(359deg);
-    }
-  }
