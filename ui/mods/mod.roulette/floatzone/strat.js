@@ -338,11 +338,11 @@ model.generateStrategy = function(){
     var firstT2Choice = randomChoice(firstT2)
     var secondT2Choice = randomChoice(firstT2)
 
-    if(stratModel.naval == true){
+    if(stratModel.naval() == true){
         firstT2Choice = randomChoice(firstT2Naval)
         secondT2Choice = randomChoice(firstT2Naval)
     }
-    if(stratModel.hybrid == true){
+    if(stratModel.hybrid() == true){
         firstT2Choice = randomChoice(firstT2Hybrid)
         if(stratModel.naval == true){firstT2Choice = randomChoice(firstT2Naval)}
         secondT2Choice = randomChoice(firstT2Hybrid)
@@ -370,7 +370,7 @@ model.generateStrategy = function(){
 
     if(firstT2Choice == "air" || secondT2Choice == "air"){lateGameOptions = lateGameOptions.concat(airLateGame)}
     if(firstT2Choice == "bot" || secondT2Choice == "bot"){lateGameOptions = lateGameOptions.concat(botLateGame)}
-    if(firstT2Choice == "naval" || secondT2Choice == "naval"){lateGameOptions = lateGameOptions.concat(navaLateGame)}
+    if(firstT2Choice == "naval" || secondT2Choice == "naval"){lateGameOptions = lateGameOptions.concat(navalLateGame)}
     if(firstT2Choice == "vehicle" || secondT2Choice == "vehicle"){lateGameOptions = lateGameOptions.concat(vehicleLateGame)}
     if(stratModel.orbital() == true){lateGameOptions = lateGameOptions.concat(orbitalLateGame)}
     var choice = randomChoice(lateGameOptions)
