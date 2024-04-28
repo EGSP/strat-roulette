@@ -101,7 +101,7 @@ var openingBuilds = [
     [["bot","bot","bot"],"bot-comrush",1.4], 
     [["bot","air","bot","bot","bot"],"phyrric comrush",1.4], 
     [["vehicle","vehicle","vehicle","vehicle"],"ferret comrush",1.7],
-    [["metal","power"],"metal-power-fac",1.4], 
+    [["metal","bot","power"],"metal-fac-power",1.4], 
     [["metal","metal"],"2+metal with com during build",1.2], 
 ]
 
@@ -153,7 +153,7 @@ var navalEarlyGame = [["piranha spam",1.1],["commander rush",1.6],["fab heavy",1
 
 var hybridEarlyGame = [["piranha spam",1.1],["commander rush",1.4],["fab heavy",1.2], ["no scouting",1.2],["no defenses",1.3],["no fab snipes",1.2],["spark/inferno drop",1.0],["aggressive naval proxy",1.2],["drifter heavy",1.1]]
 
-var orbitalEarlyGame = [["commander rush",1.5],["early invasion",1.3],["build an anchor",1.1], ["teleporter rush",1.2],["offensive astreus drop",1.2],["no scouting",1.3],["no defenses",1.2],["no fab snipes",1.3]]
+var orbitalEarlyGame = [["commander rush",1.5],["early invasion",1.3],["build an anchor",1.1], ["teleporter rush",1.2],["offensive astreus drop",1.2],["no scouting",1.3],["no defenses",1.2],["no fab snipes",1.3],["astreus com within first few minutes",1.7]]
 //------------------------------------------------------------
 //randomized and mid/late game options are restricted to that choice
 var firstT2 = ["air","bot","vehicle"]
@@ -215,7 +215,7 @@ var memeOptions = [
     ["only bots",1.8],
     ["only vehicles",2],
     ["max 3 fabs",1.5],
-    ["t2 rush",1.3],
+    ["t2 rush(after 4 facs including proxies)",1.3],
     ["large inferno drop(5+)",1.2],
     ["large boom drop",1.4],
     ["angel based snipe",1.2],
