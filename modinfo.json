@@ -12,8 +12,7 @@
     "icon": "https://github.com/Ferret-Master/strat-roulette/blob/main/roulette.png?raw=true",
     "priority": 100,
     "category": [
-        "titans", "in-game","server"
-        
+        "titans", "in-game","client","ui"
     ],
     
     "scenes": {
