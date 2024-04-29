@@ -91,6 +91,9 @@ var openingBuilds = [
     [["air"],"air first",1.5], 
     [["bot"],"bot first",1.0], 
     [["vehicle"],"vehicle first",1.2],
+    [["vehicle","air","vehicle"],"heavy vehicle",1.3],
+    [["vehicle","air","bot"],"reverse 1-1-1",1.1],
+    [["vehicle","vehicle",],"double vehicle",1.3],
     [["bot","air"],"meta build",1.0], 
     [["bot","power","air"],"meta macro",1.0],
     [["bot","air","vehicle"],"1-1-1",1.1], 
@@ -100,7 +103,7 @@ var openingBuilds = [
     [["vehicle","vehicle"],"double vehicle",1.3], 
     [["bot","bot","bot"],"bot-comrush",1.4], 
     [["bot","air","bot","bot","bot"],"phyrric comrush",1.4], 
-    [["vehicle","vehicle","vehicle","vehicle"],"ferret comrush",1.7],
+    [["vehicle","vehicle","vehicle","vehicle"],"ferret comrush",1.6],
     [["metal","bot","power"],"metal-fac-power",1.4], 
     [["metal","metal"],"2+metal with com during build",1.2], 
 ]
