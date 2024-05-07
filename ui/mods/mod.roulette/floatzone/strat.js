@@ -92,15 +92,15 @@ var openingBuilds = [
     [["bot"],"bot first",1.0], 
     [["vehicle"],"vehicle first",1.2],
     [["vehicle","air","vehicle"],"heavy vehicle",1.3],
-    [["vehicle","air","bot"],"reverse 1-1-1",1.1],
+    [["vehicle","air","bot"],"reverse 1-1-1",1.2],
     [["vehicle","vehicle",],"double vehicle",1.3],
     [["bot","air"],"meta build",1.0], 
     [["bot","power","air"],"meta macro",1.0],
     [["bot","air","vehicle"],"1-1-1",1.1], 
     [["bot","bot"],"double bot",1.3], 
+    [["bot","vehicle","air"],"bot-vehicle-air",1.2],
     [["bot","air","air"],"bot-2air",1.0],
     [["vehicle","air","air"],"vehicle-2air",1.1], 
-    [["vehicle","vehicle"],"double vehicle",1.3], 
     [["bot","bot","bot"],"bot-comrush",1.4], 
     [["bot","air","bot","bot","bot"],"phyrric comrush",1.4], 
     [["vehicle","vehicle","vehicle","vehicle"],"ferret comrush",1.6],
@@ -149,7 +149,8 @@ var earlyGame = [
     ["no fab snipes",1.2],
     ["drifter heavy",1.2],
     ["boost a t1 fac",1.1],
-    ["proxy t2",1.2]
+    ["proxy t2",1.2],
+    ["no proxy factories","1.6"]
 ]
 
 var navalEarlyGame = [["piranha spam",1.1],["commander rush",1.6],["fab heavy",1.3], ["no scouting",1.2],["no defenses",1.2],["make an early barnacle",1.1]]
@@ -188,14 +189,15 @@ var playstyleModifier = [
     ["commander not allowed to move",1.2],
     ["bot heavy no dox",1.3],
     ["no bombers","1.3"],
-    ["turtle cancer","1.4"],
+    ["heavy defenses","1.4"],
     ["delayed com push","1.6"],
-    ["hyper-defensive play",'1.3'],
-    ["hyper-aggressive play","1.2"],
+    ["defensive play",'1.3'],
+    ["aggressive play","1.2"],
     ["max 1 t2 fac",'1.05'],
     ["all t2 should be proxies","1.2"],
     ["no defenses","1.4"],
-    ["no proxy factories","1.6"]
+    ["no radar","1.2"],
+    ["no reclaim","1.2"]
 ]
 
 var hardModeModifier= [
@@ -313,6 +315,13 @@ function randomChoice(array, chance){
 
 }
 
+function randomT2Choices(choiceArray){
+    var firstT2 = randomChoice(choiceArray)
+    choiceArray = _.without(choiceArray, firstT2)
+    var secondT2 = randomChoice(choiceArray)
+    return [firstT2,secondT2]
+}
+
 model.generateStrategy = function(){
     var calculatedDifficulty = 1.0;
 
@@ -338,17 +347,23 @@ model.generateStrategy = function(){
 
     stratModel.earlyGame(choice[0])
 
-    var firstT2Choice = randomChoice(firstT2)
-    var secondT2Choice = randomChoice(firstT2)
+    var t2Choices = randomT2Choices(firstT2)
+    var firstT2Choice = t2Choices[0]
+    var secondT2Choice = t2Choices[1]
 
     if(stratModel.naval() == true){
-        firstT2Choice = randomChoice(firstT2Naval)
-        secondT2Choice = randomChoice(firstT2Naval)
+        var t2Choices = randomT2Choices(firstT2Naval)
+        var firstT2Choice = t2Choices[0]
+        var secondT2Choice = t2Choices[1]
     }
     if(stratModel.hybrid() == true){
-        firstT2Choice = randomChoice(firstT2Hybrid)
-        if(stratModel.naval == true){firstT2Choice = randomChoice(firstT2Naval)}
-        secondT2Choice = randomChoice(firstT2Hybrid)
+        var t2Choices = randomT2Choices(firstT2Hybrid)
+        firstT2Choice = t2Choices[0]
+        secondT2Choice = t2Choices[1]
+        if(stratModel.naval() == true){
+            firstT2Choice = randomChoice(firstT2Naval)
+            secondT2Choice = randomChoice(_.without(firstT2Hybrid, firstT2Choice))
+        }
     }
 
     stratModel.t2Choice(firstT2Choice + " / "+secondT2Choice)
