@@ -102,8 +102,8 @@ var openingBuilds = [
     [["bot","air","air"],"bot-2air",1.0],
     [["vehicle","air","air"],"vehicle-2air",1.1], 
     [["bot","bot","bot"],"bot-comrush",1.4], 
-    [["bot","air","bot","bot","bot"],"phyrric comrush",1.4], 
-    [["vehicle","vehicle","vehicle","vehicle"],"ferret comrush",1.6],
+    [["bot","air","bot","bot","bot"],"phyrric comrush",1.3], 
+    [["vehicle","vehicle","vehicle","vehicle"],"ferret comrush",1.4],
     [["metal","bot","power"],"metal-fac-power",1.4], 
     [["metal","metal"],"2+metal with com during build",1.2], 
 ]
@@ -134,6 +134,7 @@ var navalOpeningBuilds = [
 //------------------------------------------------------------
 //TODO add some boosting builds
 var earlyGame = [
+    ["boost air",1.1],
     ["fab drops",1.1],
     ["spark/inferno drop",1.0],
     ["commander rush",1.4],
@@ -276,7 +277,7 @@ model.generateBuildOrder = function(chosenBuild){
     stratModel.openingName(chosenBuild[1])
     var fabNumber = randomWeightedChoice(fabOpener)
     if(openingFacs[0].factory == "naval"){fabNumber--}
-    if(openingFacs[0].factory == "air" && fabNumber >3){fabNumber = 3}
+    if(openingFacs[0].factory == "air" && fabNumber >3){fabNumber = "whatever you want"}
     stratModel.openingFabsName("Open with "+ fabNumber + fabType)
 }
 
