@@ -33,17 +33,6 @@ function stratModel() {
 }
 stratModel = new stratModel();
 
-model.toggleNaval = function(){
-    stratModel.naval(!stratModel.naval())
-}
-
-model.toggleHybrid = function(){
-    stratModel.naval(!stratModel.naval())
-}
-
-model.toggleOrbital = function(){
-    stratModel.naval(!stratModel.naval())
-}
 
 //makes the floating frame for the view model
 createFloatingFrame("strat_frame", 450, 50, {"offset": "topRight", "left": -240});
@@ -109,7 +98,7 @@ var openingBuilds = [
 ]
 
 var hybridOpeningBuilds = [
-    [["naval"],"naval first",1.0], 
+    [["naval"],"naval first",1.4], 
     [["air"],"air first",1.6], 
     [["bot"],"bot first",1.0], 
     [["vehicle"],"vehicle first",1.2], 
@@ -135,12 +124,14 @@ var navalOpeningBuilds = [
 //TODO add some boosting builds
 var earlyGame = [
     ["boost air",1.1],
+    ["com proxy",1.1],
+    ["compush an objective",1.3],
     ["fab drops",1.1],
     ["spark/inferno drop",1.0],
     ["commander rush",1.4],
     ["fab heavy",1.2],
     ["no scouting",1.1],
-    ["no defenses",1.2],
+    ["no laser turrets",1.2],
     ["early orbital",1.4],
     ["pre fab units",1.1],
     ["wrong way(expand backwards)",1.2],
@@ -188,15 +179,17 @@ var navalLateGame = [["kaiju spam",1.1],["advanced torpedo launcher creep",1.2]]
 var playstyleModifier = [
     ["1 air fac",1.4],
     ["commander not allowed to move",1.2],
-    ["bot heavy no dox",1.3],
+    ["bot heavy no dox",1.4],
+    ["bot heavy only dox",1.3],
     ["no bombers","1.3"],
-    ["heavy defenses","1.4"],
+    ["heavy defenses","1.3"],
     ["delayed com push","1.6"],
     ["defensive play",'1.3'],
     ["aggressive play","1.2"],
-    ["max 1 t2 fac",'1.05'],
+    ["max 1 t2 fac",'1.1'],
     ["all t2 should be proxies","1.2"],
-    ["no defenses","1.4"],
+    ["no defenses","1.5"],
+    ["no artillery","1.3"],
     ["no radar","1.2"],
     ["no reclaim","1.2"]
 ]
@@ -248,7 +241,7 @@ var buildbarIcons = {
     "t2naval":"sea/naval_factory_adv/naval_factory_adv_icon_buildbar",
     "orbital":"land/orbital_launcher/orbital_launcher_icon_buildbar",
     "metal":"land/metal_extractor/metal_extractor_icon_buildbar",
-    "power":"land/metal_extractor/metal_extractor_icon_buildbar",
+    "power":"land/energy_plant/energy_plant_icon_buildbar",
     }
 
 var fabBuildBars = [["Air",""],["Bot",""],["Vehicle",""],["Naval",""]]
