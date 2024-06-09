@@ -38,7 +38,7 @@
                 <button class="quad common btn-default" onclick="model.toggleNaval()">
                     <img id="naval-button-img" class="mini" src='coui://ui/mods/mod.roulette/img/ship-no.png' />
                 </button>
-                <button  class="quad common btn-default"  onclick="model.toggleOrbital()">
+                <button class="quad common btn-default" onclick="model.toggleOrbital()">
                     <img id="orbital-button-img" class="mini" src='coui://ui/mods/mod.roulette/img/planet-no.png' />
                 </button>
 
@@ -66,6 +66,13 @@
 
                         <div class="text-title-alt">
                             <loc>Modifiers </loc>
+                        </div>
+
+                        <div class="tasks" data-bind="foreach: modifiers">
+                            <div>
+                                <img class="micro" src="coui://ui/mods/mod.roulette/img/plan.png" />
+                                <span class="text-accent" data-bind="text: loc(content)"></span>
+                            </div>
                         </div>
                         <ul class="tasks">
                             <li class="task">
@@ -192,11 +199,11 @@
     }
 
 
-    if(localStorage["frames_strat_frame_switchStatus"] == "true") {
+    if (localStorage["frames_strat_frame_switchStatus"] == "true") {
         $("#viewport").css("flex-direction", "row-reverse");
         // just doesnt work, naaaahhh
         // $("#content-viewport").css("background","linear-gradient(180deg, rgba(53, 53, 53, 0.38) 0%, rgba(255, 255, 255, 0) 100%) !important");
-    }else{
+    } else {
         $("#viewport").css("flex-direction", "row");
         // $("#content-viewport").css("background","linear-gradient(135deg, rgba(53, 53, 53, 0.38) 0%, rgba(255, 255, 255, 0) 100%) !important");
     }

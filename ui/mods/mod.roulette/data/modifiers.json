@@ -1,0 +1,216 @@
+{
+    "max_modifiers_count":3,
+    "max_earlygame_count":2,
+    "max_midgame_count":2,
+    "max_endgame_count":2,
+
+    "conflict_groups": [
+        [[7],[15]],
+        [[1],[19]]
+    ],
+
+    "items": [
+        {
+            "id":0,
+            "content": "no radar",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["modifier"]
+        },
+        {
+            "id":1,
+            "content": "commander not allowed to move",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["modifier"]
+        },
+        {
+            "id":2,
+            "content": "bot heavy without dox",
+            "planet_conditions":["land"],
+            "stage_conditions":["modifier"]
+        },
+        {
+            "id":3,
+            "content": "no bombers",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["modifier"]
+        },
+        {
+            "id":4,
+            "content": "heavy defenses",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["modifier"]
+        },
+        {
+            "id":5,
+            "content": "aggressive play",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["modifier"]
+        },
+        {
+            "id":6,
+            "content": "defensive play",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["modifier"]
+        },
+        {
+            "id":7,
+            "content": "all t2 should be proxies",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["modifier"]
+        },
+        {
+            "id":8,
+            "content": "no defense structures",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["modifier"]
+        },
+        {
+            "id":9,
+            "content": "no reclaim",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["modifier"]
+        },
+        {
+            "id":10,
+            "content": "fab heavy",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["modifier"]
+        },
+        {
+            "id":11,
+            "content": "no scouting",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["modifier"]
+        },
+        {
+            "id":12,
+            "content": "expand towards enemy base",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["modifier"]
+        },
+        {
+            "id":13,
+            "content": "line base",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["modifier"]
+        },
+        {
+            "id":14,
+            "content": "no fab snipes",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["modifier"]
+        },
+        {
+            "id":15,
+            "content": "no proxy factories",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["modifier"]
+        },
+        {
+            "id": 16,
+            "content":"fab drops",
+            "planet_conditions":["land"],
+            "stage_conditions":["earlygame"]
+        },
+        {
+            "id": 17,
+            "content":"inferno drop",
+            "planet_conditions":["land"],
+            "stage_conditions":["earlygame"]
+        },
+        {
+            "id": 18,
+            "content":"spark drop",
+            "planet_conditions":["land"],
+            "stage_conditions":["earlygame"]
+        },
+        {
+            "id": 19,
+            "content":"commander rush",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["earlygame"]
+        },
+        {
+            "id": 20,
+            "content":"boost first factory",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["earlygame"]
+        },
+        {
+            "id": 21,
+            "content":"build first t2 as proxy",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["earlygame"]
+        },
+        {
+            "id": 22,
+            "content":"piranha spam",
+            "planet_conditions":["naval"],
+            "stage_conditions":["earlygame"]
+        },
+        {
+            "id": 23,
+            "content":"make an early barnacle",
+            "planet_conditions":["naval"],
+            "stage_conditions":["earlygame"]
+        },
+        {
+            "id": 24,
+            "content":"aggressive naval proxy",
+            "planet_conditions":["naval"],
+            "stage_conditions":["modifier","earlygame","midgame","endgame"]
+        },
+        {
+            "id": 25,
+            "content":"drifter heavy",
+            "planet_conditions":["naval","land"],
+            "stage_conditions":["modifier"]
+        },
+        {
+            "id": 26,
+            "content":"early invasion",
+            "planet_conditions":["orbital"],
+            "stage_conditions":["earlygame"]
+        },
+        {
+            "id": 27,
+            "content":"teleporter rush",
+            "planet_conditions":["orbital"],
+            "stage_conditions":["earlygame"]
+        },
+        {
+            "id": 28,
+            "content":"reclaim heavy",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["modifier"]
+        },
+        {
+            "id": -1,
+            "content":"",
+            "planet_conditions":[],
+            "stage_conditions":[]
+        },
+        {
+            "id": -1,
+            "content":"",
+            "planet_conditions":[],
+            "stage_conditions":[]
+        },
+        {
+            "id": -1,
+            "content":"",
+            "planet_conditions":[],
+            "stage_conditions":[]
+        },
+        {
+            "id": -1,
+            "content":"",
+            "planet_conditions":[],
+            "stage_conditions":[]
+        }
+
+    ]
+
+    
+}
+

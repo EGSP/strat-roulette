@@ -1,3 +1,6 @@
+const data_folder_path = 'coui://ui/mods/mod.roulette/data/';
+
+
 //view model setup
 function stratModel() {
     var self = this;
@@ -29,6 +32,11 @@ function stratModel() {
     self.t2Choice = ko.observable("")
     self.stratGenerated = ko.observable(false)
     self.meme = ko.observable("")
+
+    self.modifiers = ko.observableArray([]);
+    self.earlygame_tasks = ko.observableArray([]);
+    self.midgame_tasks = ko.observableArray([]);
+    self.endgame_tasks = ko.observableArray([]);
 
 }
 stratModel = new stratModel();
@@ -76,23 +84,23 @@ model.toggleStratUIExpanded = function () {
 
 model.toggleSwitch = function () {
     var status = localStorage["frames_strat_frame_switchStatus"];
-    if(status == "true") {
+    if (status == "true") {
         status = "false";
     } else {
         status = "true";
     }
     localStorage.setItem("frames_strat_frame_switchStatus", status);
-    if(localStorage["frames_strat_frame_switchStatus"] == "true") {
+    if (localStorage["frames_strat_frame_switchStatus"] == "true") {
         // just doesnt work, naaaahhh
         // var str = "linear-gradient(135deg, rgba(53, 53, 53, 0.38) 0%, rgba(255, 255, 255, 0) 100%) !important"
         // $(".content-viewport").css("background",str);
         $("#viewport").css("flex-direction", "row-reverse");
-        
-    }else{
+
+    } else {
         // var str = "linear-gradient(135deg, rgba(53, 53, 53, 0.38) 0%, rgba(255, 255, 255, 0) 100%) !important"
         // $("#content-viewport").css("background",str);
         $("#viewport").css("flex-direction", "row");
-        
+
     }
 
     console.log(status);
@@ -110,7 +118,7 @@ model.toggleNaval = function () {
 model.toggleOrbital = function () {
     stratModel.orbital(!stratModel.orbital())
     console.log(stratModel.orbital())
-    if(stratModel.orbital() == true) {
+    if (stratModel.orbital() == true) {
         $("#orbital-button-img").attr("src", "coui://ui/mods/mod.roulette/img/planet.png");
     } else {
         $("#orbital-button-img").attr("src", "coui://ui/mods/mod.roulette/img/planet-no.png");
@@ -125,12 +133,6 @@ model.toggleOrbital = function () {
 //if naval/hybrid, orb only changes early game+ options
 
 //always
-
-// map with localized strings
-
-function dic(key) {
-    return loc('!LOC:' + key);
-}
 
 var openingBuilds = [
     [["air"], "air first", 1.5],
@@ -250,6 +252,146 @@ var playstyleModifier = [
     ["no reclaim", "1.2"]
 ]
 
+// loaded data
+var modifiers_catalog = {
+    max_count: 0,
+    items: []
+}
+var earlygame_tasks_catalog = {
+    max_count: 0,
+    items: []
+}
+var midgame_tasks_catalog = {
+    max_count: 0,
+    items: []
+}
+var endgame_tasks_catalog = {
+    max_count: 0,
+    items: []
+}
+
+// STATIC FUNCTIONS
+function load_data() {
+    // loading modifiers
+    $.getJSON(data_folder_path.concat('modifiers.json')).then(function (data) {
+        modifiers_catalog = data
+        console.log('modifiers_catalog/')
+        console.log(modifiers_catalog)
+    });
+
+    // loading earlygame
+    $.getJSON(data_folder_path.concat('earlygame_tasks.json')).then(function (data) {
+        earlygame_tasks_catalog = data
+        console.log('earlygame_tasks_catalog/')
+        console.log(earlygame_tasks_catalog)
+    });
+
+    // loading midgame
+    $.getJSON(data_folder_path.concat('midgame_tasks.json')).then(function (data) {
+        midgame_tasks_catalog = data
+        console.log('midgame_tasks_catalog/')
+        console.log(midgame_tasks_catalog)
+    });
+
+    // loading endgame
+    $.getJSON(data_folder_path.concat('endgame_tasks.json')).then(function (data) {
+        endgame_tasks_catalog = data
+        console.log('endgame_tasks_catalog/')
+        console.log(endgame_tasks_catalog)
+    });
+}
+
+// STATIC FUNCTIONS MATH
+function get_random_value_inclusive(min, max) {
+    return _.random(min, max);
+}
+
+/**
+ * Returns a random value from an array along with its index.
+ *
+ * @param {Array} array - The array from which to select a random value.
+ * @return {Object|undefined} An object containing the randomly selected value and its index, or undefined if the array is empty.
+ * @example
+ * var result = get_random_array_value(["foo", "bar", "baz"]);
+ * var value = result.value
+ * var index = result.index
+ */
+function get_random_array_value(array) {
+    if (array.length == 0) { return undefined }
+
+    var index = Math.floor(Math.random() * array.length);
+    return {
+        value: array[index],
+        index: index
+    };
+}
+
+/**
+ * Returns a random value from an array based on the weights of each element. 
+ * Array elements should be objects containing the weight property
+ *
+ * @param {Array<{value: any, weight: number}>} array - The array of objects containing the weight of each element.
+ * @return {any} The randomly selected value from the array with index, or undefined if no value is found.
+ * @example
+ * var result = get_random_value_by_weight([{some_property: "foo", weight: 0.5}, {some_property: "bar", weight: 0.3}, {another_property: "baz", weight: 0.2}]);
+ * var value = result.value
+ * var index = result.index
+ */
+function get_random_value_by_weight(array) {
+    if (array.length == 0) { return undefined }
+    // array element should be objects with the weight property
+    if (array[0].weight == null) { return undefined }
+
+    // multiply random value between 0..1 by sum of all weights
+    var weight_pointer = Math.random() * _.reduce(array, function (acc, obj) { acc + obj.weight}, 0);
+    // var weight_pointer = Math.random();
+
+    var weight_pointer_treshold = 0
+    for (var i = 0; i < array.length; i++) {
+        weight_pointer_treshold += array[i].weight
+        if (weight_pointer < weight_pointer_treshold) {
+            return {
+                value: array[i],
+                index: i
+            }
+        }
+    }
+    return undefined
+}
+
+function get_multiple_random_array_value(original_array, count) {
+    if (count > original_array.length) { count = original_array.length }
+
+    var results = []
+    var copied_array = original_array.slice()
+    for (var i = 0; i < count; i++) {
+        var result = get_random_array_value(copied_array)
+        results.push(result.value)
+        // remove selected value
+        copied_array.splice(result.index, 1)
+    }
+    return results
+}
+
+function get_multiple_random_value_by_weight(original_array, count) {
+    if (count > original_array.length) { count = original_array.length }
+
+    var results = []
+    var copied_array = original_array.slice()
+    for (var i = 0; i < count; i++) {
+        var result = get_random_value_by_weight(copied_array)
+        results.push(result.value)
+        // remove selected value
+        copied_array.splice(result.index, 1)
+    }
+    return results
+}
+
+function get_localized_string(key) {
+    return loc('!LOC:' + key);
+}
+
+
 var hardModeModifier = [
     ["fab flood(first factory can only make fabs and cannot be turned off)", 1.7],
     ["t1 only", 1.4],
@@ -364,7 +506,6 @@ function randomChoice(array, chance) {
     var chanceNum = Math.random()
     if (chance > chanceNum) { return finalResult }
     else { return ["no change", 1.0] }
-
 }
 
 function randomT2Choices(choiceArray) {
@@ -450,7 +591,7 @@ model.generateStrategy = function () {
 
     stratModel.endGame(choice[0])
 
-    //---------------------------
+    //--------------------------- 
 
     var choice = randomChoice(playstyleModifier, 0.5)
 
@@ -480,8 +621,24 @@ model.generateStrategy = function () {
     var winChance = 0.5 / calculatedDifficulty * 100
     winChance = winChance.toFixed(1)
     stratModel.winChance("%" + winChance)
+
+    stratModel.modifiers(get_modifiers())
+    console.log(stratModel.modifiers)
 }
 
+function get_modifiers() {
+    // get random count value based on modifiers length
+    var count = get_random_value_inclusive(1, modifiers_catalog.max_count)
+    var values = get_multiple_random_array_value(modifiers_catalog.items, count)
+    return values
+}
+
+function get_earlygame_tasks() {
+    // get random count value based on modifiers length
+    var count = get_random_value_inclusive(1, earlygame_tasks_catalog.max_count)
+    var values = get_multiple_random_array_value(earlygame_tasks_catalog.items, count)
+    return values
+}
 
 
 model.processGenerateClick = function () {
@@ -492,3 +649,6 @@ model.processGenerateClick = function () {
     // _.delay(model.generateStrategy, 3000)
 
 }
+
+
+load_data();

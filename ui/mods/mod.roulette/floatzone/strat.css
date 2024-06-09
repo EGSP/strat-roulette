@@ -44,6 +44,11 @@ li.task {
     list-style: none
 }
 
+div.tasks{
+    display: flex;
+    flex-direction: column;
+}
+
 /* li.task::before{
     content: '';
     display: inline-block;
