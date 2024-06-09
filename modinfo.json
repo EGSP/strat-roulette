@@ -1,6 +1,6 @@
 {
     "context": "client",
-    "identifier": "com.pa.ferretmaster.strat-roulette",
+    "identifier": "com.pa.ferretmaster.strat-roulette.dev",
     "display_name": "Strat Roulette",
     "description": "Adds an ingame panel that lets you generate a random strategy, intended for 1v1",
     "author": "Ferretmaster",
