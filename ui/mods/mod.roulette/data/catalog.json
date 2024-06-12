@@ -164,7 +164,7 @@
             "id": 25,
             "content":"drifter heavy",
             "planet_conditions":["naval","land"],
-            "stage_conditions":["modifier"]
+            "stage_conditions":["modifier","earlygame"]
         },
         {
             "id": 26,

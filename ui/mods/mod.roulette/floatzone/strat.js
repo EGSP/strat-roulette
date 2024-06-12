@@ -625,6 +625,10 @@ function get_new_strategy() {
     var endgame_tasks_count = get_random_value_inclusive(1, catalog.max_endgame_count)
 
     var items_copy = catalog.items.slice()
+    // remove unused items with id = -1
+    items_copy = _.filter(items_copy, function (x) {
+        return x.id != -1;
+    });
 
     var planet_conditions = get_selected_planet_conditions()
 
