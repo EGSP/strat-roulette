@@ -14,9 +14,11 @@ function stratModel() {
     self.modifierDifficulty = ko.observable(1)
     self.memeDifficulty = ko.observable(1)
     self.hardModifierDifficulty = ko.observable(1)
+
     self.naval = ko.observable(false)
     self.hybrid = ko.observable(false)
     self.orbital = ko.observable(false)
+
     self.hardMode = ko.observable(false)
     self.openingFacs = ko.observable([])
     self.openingT2Facs = ko.observable([])
@@ -253,55 +255,35 @@ var playstyleModifier = [
 ]
 
 // loaded data
-var modifiers_catalog = {
-    max_count: 0,
-    items: []
-}
-var earlygame_tasks_catalog = {
-    max_count: 0,
-    items: []
-}
-var midgame_tasks_catalog = {
-    max_count: 0,
-    items: []
-}
-var endgame_tasks_catalog = {
-    max_count: 0,
+var catalog = {
+    max_modifiers_count: 0,
+    max_earlygame_count: 0,
+    max_midgame_count: 0,
+    max_endgame_count: 0,
+
+    conflict_groups: [],
+
     items: []
 }
 
-// STATIC FUNCTIONS
+// STATIC FUNCTIONS -------------------------------------------------------------
 function load_data() {
-    // loading modifiers
-    $.getJSON(data_folder_path.concat('modifiers.json')).then(function (data) {
-        modifiers_catalog = data
-        console.log('modifiers_catalog/')
-        console.log(modifiers_catalog)
-    });
-
-    // loading earlygame
-    $.getJSON(data_folder_path.concat('earlygame_tasks.json')).then(function (data) {
-        earlygame_tasks_catalog = data
-        console.log('earlygame_tasks_catalog/')
-        console.log(earlygame_tasks_catalog)
-    });
-
-    // loading midgame
-    $.getJSON(data_folder_path.concat('midgame_tasks.json')).then(function (data) {
-        midgame_tasks_catalog = data
-        console.log('midgame_tasks_catalog/')
-        console.log(midgame_tasks_catalog)
-    });
-
-    // loading endgame
-    $.getJSON(data_folder_path.concat('endgame_tasks.json')).then(function (data) {
-        endgame_tasks_catalog = data
-        console.log('endgame_tasks_catalog/')
-        console.log(endgame_tasks_catalog)
+    // structure schema
+    // {
+    //     id: number
+    //     content: string
+    //     planet_conditions: [string]
+    //     stage_conditions: [string]
+    // }
+    // loading catalog
+    $.getJSON(data_folder_path.concat('catalog.json')).then(function (data) {
+        catalog = data
+        console.log('catalog:/')
+        console.log(catalog)
     });
 }
 
-// STATIC FUNCTIONS MATH
+// STATIC FUNCTIONS MATH -------------------------------------------------------------
 function get_random_value_inclusive(min, max) {
     return _.random(min, max);
 }
@@ -343,7 +325,7 @@ function get_random_value_by_weight(array) {
     if (array[0].weight == null) { return undefined }
 
     // multiply random value between 0..1 by sum of all weights
-    var weight_pointer = Math.random() * _.reduce(array, function (acc, obj) { acc + obj.weight}, 0);
+    var weight_pointer = Math.random() * _.reduce(array, function (acc, obj) { acc + obj.weight }, 0);
     // var weight_pointer = Math.random();
 
     var weight_pointer_treshold = 0
@@ -386,6 +368,8 @@ function get_multiple_random_value_by_weight(original_array, count) {
     }
     return results
 }
+
+// STATIC FUNCTIONS MATH END -------------------------------------------------------------
 
 function get_localized_string(key) {
     return loc('!LOC:' + key);
@@ -622,23 +606,244 @@ model.generateStrategy = function () {
     winChance = winChance.toFixed(1)
     stratModel.winChance("%" + winChance)
 
-    stratModel.modifiers(get_modifiers())
-    console.log(stratModel.modifiers)
+    // stratModel.modifiers(get_modifiers())
+    // console.log(stratModel.modifiers)
+
+    var new_strategy = get_new_strategy()
+    console.log("new strategy/:")
+    console.log(new_strategy)
 }
 
-function get_modifiers() {
-    // get random count value based on modifiers length
-    var count = get_random_value_inclusive(1, modifiers_catalog.max_count)
-    var values = get_multiple_random_array_value(modifiers_catalog.items, count)
-    return values
+// STRATEGY GENERATOR -----------------------------------------------------------
+// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
+
+function get_new_strategy() {
+    var modifiers_count = get_random_value_inclusive(1, catalog.max_modifiers_count)
+    var earlygame_tasks_count = get_random_value_inclusive(1, catalog.max_earlygame_count)
+    var midgame_tasks_count = get_random_value_inclusive(1, catalog.max_midgame_count)
+    var endgame_tasks_count = get_random_value_inclusive(1, catalog.max_endgame_count)
+
+    var items_copy = catalog.items.slice()
+
+    var planet_conditions = get_selected_planet_conditions()
+
+
+    var modifiers = get_multiple_random_array_value(
+        _.filter(items_copy, function (x) {
+            return does_item_match_conditions(planet_conditions, "modifier", x);
+        }),
+        modifiers_count)
+    // remove selected items by filter
+    items_copy = _.filter(items_copy, function (x) {
+        return !_.includes(modifiers, x);
+    });
+
+    var earlygame_tasks = get_multiple_random_array_value(
+        _.filter(items_copy, function (x) {
+            return does_item_match_conditions(planet_conditions, "earlygame", x);
+        }),
+        earlygame_tasks_count)
+    items_copy = _.filter(items_copy, function (x) {
+        return !_.includes(earlygame_tasks, x);
+    });
+
+    var midgame_tasks = get_multiple_random_array_value(
+        _.filter(items_copy, function does_item_match_conditions_midgame(x) {
+            return does_item_match_conditions(planet_conditions, "midgame", x);
+        }),
+        midgame_tasks_count)
+    items_copy = _.filter(items_copy, function (x) {
+        return !_.includes(midgame_tasks, x);
+    });
+
+    var endgame_tasks = get_multiple_random_array_value(
+        _.filter(items_copy, function does_item_match_conditions_endgame(x) {
+            return does_item_match_conditions(planet_conditions, "endgame", x);
+        }),
+        endgame_tasks_count)
+
+    var result = resolve_conflicting_items(
+        [
+            modifiers,
+            earlygame_tasks,
+            midgame_tasks,
+            endgame_tasks
+        ]
+    )
+
+    return {
+        modifiers: result[0],
+        earlygame_tasks: result[1],
+        midgame_tasks: result[2],
+        endgame_tasks: result[3]
+    }
 }
 
-function get_earlygame_tasks() {
-    // get random count value based on modifiers length
-    var count = get_random_value_inclusive(1, earlygame_tasks_catalog.max_count)
-    var values = get_multiple_random_array_value(earlygame_tasks_catalog.items, count)
-    return values
+/**
+ * Returns an array of planet conditions based on the selected model's orbital and naval properties.
+ *
+ * @return {Array} An array of strings representing the planet conditions. The array contains "orbital" if the selected model is orbital, "naval" if the selected model is naval, and "land" if the selected model is not naval.
+ */
+function get_selected_planet_conditions() {
+    var condtions = []
+    if (stratModel.orbital() == true) {
+        condtions.push("orbital")
+    }
+
+    if (stratModel.naval() == true) {
+        condtions.push("naval")
+    } else {
+        condtions.push("land")
+    }
+
+    return condtions
 }
+
+/**
+ * Checks if the given item matches the specified planet and stage conditions.
+ *
+ * @param {Array} planet_conditions - An array of planet conditions to check against.
+ * @param {string} stage_condition - The stage condition to check against.
+ * @param {Object} item - The item to check.
+ * @return {boolean} Returns true if the item matches all the conditions, otherwise false.
+ */
+function does_item_match_conditions(planet_conditions, stage_condition, item) {
+    if (does_item_match_any_planet_conditions(planet_conditions, item) == false) {
+        return false
+    }
+    if (does_item_match_stage_condition(stage_condition, item) == false) {
+        return false
+    }
+    return true
+}
+
+/**
+ * Checks if the given item matches the specified planet conditions.
+ *
+ * @param {Array} conditions - An array of planet conditions to check against.
+ * @param {Object} item - The item to check.
+ * @return {boolean} Returns true if the item matches all the conditions, otherwise false.
+ * @deprecated not used yet
+ */
+function does_item_match_planet_conditions(conditions, item) {
+    for (var i = 0; i < conditions.length; i++) {
+        if (item.planet_conditions.includes(conditions[i]) == false) {
+            return false
+        }
+    }
+    return true
+}
+
+/**
+ * Checks if the given item matches any of the specified planet conditions.
+ *
+ * @param {Array} conditions - An array of planet conditions to check against.
+ * @param {Object} item - The item to check.
+ * @return {boolean} Returns true if the item matches any of the conditions, otherwise false.
+ */
+function does_item_match_any_planet_conditions(conditions, item) {
+    // console.log("does_item_match_any_planet_conditions")
+    // console.log(item)
+    // console.log(conditions)
+    for (var i = 0; i < conditions.length; i++) {
+        if (_.includes(item.planet_conditions, conditions[i])) {
+            return true
+        }
+    }
+    return false
+}
+
+/**
+ * Checks if the given item matches the specified stage condition.
+ *
+ * @param {string} condition - The stage condition to check against.
+ * @param {Object} item - The item to check.
+ * @return {boolean} Returns true if the item matches the condition, otherwise false.
+ */
+function does_item_match_stage_condition(condition, item) {
+    if (!_.includes(item.stage_conditions, condition)) {
+        return false
+    }
+    return true
+}
+
+/**
+ * Resolves conflicts between items in the given arrays of items.
+ *
+ * @param {Array<Array<Object>>} items_arrays - An array of arrays of items, where each item is an object with an 'id' property.
+ * @return {Array<Array<Object>>} The modified array of arrays of items, with conflicting items removed.
+ */
+function resolve_conflicting_items(items_arrays) {
+    // copy arrays to not modify original arrays
+    var items_arrays = items_arrays.slice()
+    // each conflict group contains two arrays (left,right)
+    // for each conflict group we should look at the left and right arrays
+    // if items_array contains an item that matches any side of conflict group
+    // we should look at the other side ids and remove them from items_array
+
+    // items does not have priority so first item we look at is prioritized
+
+    var conflict_groups = catalog.conflict_groups
+
+    for (var i = 0; i < conflict_groups.length; i++) {
+        var conflict_group = conflict_groups[i]
+        var left = conflict_group.left
+        for (var j = 0; j < left.length; j++) {
+            if (find_item(left[j]) != undefined) {
+                remove_items(conflict_group.right)
+                // if we removed all conflict for a single item in group we can break
+                // to not iterate through the rest of the conflict group
+                break
+            }
+        }
+    }
+
+    return items_arrays
+
+    /**
+    * Search for an item by its ID in the items arrays.
+    *
+    * @param {number} id - The ID of the item to find.
+    * @return {Object} The item with the matching ID, or undefined if not found.
+    */
+    function find_item(id) {
+        // It iterates through each array in the outer loop 
+        // and each element in the inner loop.
+        for (var i = 0; i < items_arrays.length; i++) {
+            for (var j = 0; j < items_arrays[i].length; j++) {
+                if (items_arrays[i][j].id == id) {
+                    return items_arrays[i][j]
+                }
+            }
+        }
+
+        return undefined
+    }
+
+    function remove_item(id) {
+        for (var i = 0; i < items_arrays.length; i++) {
+            for (var j = 0; j < items_arrays[i].length; j++) {
+                if (items_arrays[i][j].id == id) {
+                    items_arrays[i].splice(j, 1)
+                }
+            }
+        }
+    }
+
+    function remove_items(ids) {
+        for (var i = 0; i < ids.length; i++) {
+            remove_item(ids[i])
+        }
+    }
+}
+
+// function get_earlygame_tasks() {
+//     // get random count value based on modifiers length
+//     var count = get_random_value_inclusive(1, earlygame_tasks_catalog.max_count)
+//     var values = get_multiple_random_array_value(earlygame_tasks_catalog.items, count)
+//     return values
+// }
 
 
 model.processGenerateClick = function () {

@@ -5,8 +5,8 @@
     "max_endgame_count":2,
 
     "conflict_groups": [
-        [[7],[15]],
-        [[1],[19]]
+        {"left":[7],"right":[15]},
+        {"left":[1],"right":[19]}
     ],
 
     "items": [
