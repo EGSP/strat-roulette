@@ -1,5 +1,68 @@
 {
-    "max_modifiers_count":3,
+    "factories":[
+        {
+            "id":0,
+            "type":"bot",
+            "tier": 1,
+            "icon":"coui://pa/units/land/bot_factory/bot_factory_icon_buildbar.png"
+        },
+        {
+            "id":1,
+            "type":"vehicle",
+            "tier": 1,
+            "icon":"coui://pa/units/land/vehicle_factory/vehicle_factory_icon_buildbar.png"
+        },
+        {
+            "id":2,
+            "type":"air",
+            "tier": 1,
+            "icon":"coui://pa/units/air/air_factory/air_factory_icon_buildbar.png"
+        },
+        {
+            "id":3,
+            "type":"naval",
+            "tier": 1,
+            "icon":"coui://pa/units/sea/naval_factory/naval_factory_icon_buildbar.png"
+        },
+        {
+            "id":4,
+            "type":"orbital",
+            "tier": 1,
+            "icon":"coui://pa/units/orbital/orbital_launcher/orbital_launcher_icon_buildbar.png"
+        },
+        {
+            "id":5,
+            "type":"bot",
+            "tier": 2,
+            "icon":"coui://pa/units/land/bot_factory_adv/bot_factory_adv_icon_buildbar.png"
+        },
+        {
+            "id":6,
+            "type":"vehicle",
+            "tier": 2,
+            "icon":"coui://pa/units/land/vehicle_factory_adv/vehicle_factory_adv_icon_buildbar.png"
+        },
+        {
+            "id":7,
+            "type":"air",
+            "tier": 2,
+            "icon":"coui://pa/units/air/air_factory_adv/air_factory_adv_icon_buildbar.png"
+        },
+        {
+            "id":8,
+            "type":"naval",
+            "tier": 2,
+            "icon":"coui://pa/units/sea/naval_factory_adv/naval_factory_adv_icon_buildbar.png"
+        },
+        {
+            "id":9,
+            "type":"orbital",
+            "tier": 2,
+            "icon":"coui://pa/units/orbital/orbital_factory/orbital_factory_icon_buildbar.png"
+        }
+    ],
+    
+    "max_modifiers_count":2,
     "max_earlygame_count":2,
     "max_midgame_count":2,
     "max_endgame_count":2,
@@ -13,176 +76,381 @@
         {
             "id":0,
             "content": "no radar",
-            "planet_conditions":["land","naval"],
-            "stage_conditions":["modifier"]
+            "planet_conditions":["any"],
+            "stage_conditions":["modifier"],
+            "factory_conditions":["any"]
         },
         {
             "id":1,
             "content": "commander not allowed to move",
-            "planet_conditions":["land","naval"],
-            "stage_conditions":["modifier"]
+            "planet_conditions":["any"],
+            "stage_conditions":["modifier"],
+            "factory_conditions":["any"]
         },
         {
             "id":2,
             "content": "bot heavy without dox",
             "planet_conditions":["land"],
-            "stage_conditions":["modifier"]
+            "stage_conditions":["modifier"],
+            "factory_conditions":["bot"]
         },
         {
             "id":3,
             "content": "no bombers",
             "planet_conditions":["land","naval"],
-            "stage_conditions":["modifier"]
+            "stage_conditions":["modifier"],
+            "factory_conditions":["air"]
         },
         {
             "id":4,
             "content": "heavy defenses",
-            "planet_conditions":["land","naval"],
-            "stage_conditions":["modifier"]
+            "planet_conditions":["any"],
+            "stage_conditions":["modifier"],
+            "factory_conditions":["any"]
         },
         {
             "id":5,
             "content": "aggressive play",
-            "planet_conditions":["land","naval"],
-            "stage_conditions":["modifier"]
+            "planet_conditions":["any"],
+            "stage_conditions":["modifier"],
+            "factory_conditions":["any"]
         },
         {
             "id":6,
             "content": "defensive play",
-            "planet_conditions":["land","naval"],
-            "stage_conditions":["modifier"]
+            "planet_conditions":["any"],
+            "stage_conditions":["modifier"],
+            "factory_conditions":["any"]
         },
         {
             "id":7,
             "content": "all t2 should be proxies",
             "planet_conditions":["land","naval"],
-            "stage_conditions":["modifier"]
+            "stage_conditions":["modifier"],
+            "factory_conditions":["any"]
         },
         {
             "id":8,
             "content": "no defense structures",
-            "planet_conditions":["land","naval"],
-            "stage_conditions":["modifier"]
+            "planet_conditions":["any"],
+            "stage_conditions":["modifier"],
+            "factory_conditions":["any"]
         },
         {
             "id":9,
             "content": "no reclaim",
-            "planet_conditions":["land","naval"],
-            "stage_conditions":["modifier"]
+            "planet_conditions":["any"],
+            "stage_conditions":["modifier"],
+            "factory_conditions":["any"]
         },
         {
             "id":10,
             "content": "fab heavy",
-            "planet_conditions":["land","naval"],
-            "stage_conditions":["modifier"]
+            "planet_conditions":["any"],
+            "stage_conditions":["modifier"],
+            "factory_conditions":["any"]
         },
         {
             "id":11,
             "content": "no scouting",
-            "planet_conditions":["land","naval"],
-            "stage_conditions":["modifier"]
+            "planet_conditions":["any"],
+            "stage_conditions":["modifier"],
+            "factory_conditions":["any"]
         },
         {
             "id":12,
             "content": "expand towards enemy base",
             "planet_conditions":["land","naval"],
-            "stage_conditions":["modifier"]
+            "stage_conditions":["modifier"],
+            "factory_conditions":["any"]
         },
         {
             "id":13,
             "content": "line base",
             "planet_conditions":["land","naval"],
-            "stage_conditions":["modifier"]
+            "stage_conditions":["modifier"],
+            "factory_conditions":["any"]
         },
         {
             "id":14,
             "content": "no fab snipes",
-            "planet_conditions":["land","naval"],
-            "stage_conditions":["modifier"]
+            "planet_conditions":["any"],
+            "stage_conditions":["modifier"],
+            "factory_conditions":["any"]
         },
         {
             "id":15,
             "content": "no proxy factories",
             "planet_conditions":["land","naval"],
-            "stage_conditions":["modifier"]
+            "stage_conditions":["modifier"],
+            "factory_conditions":["any"]
         },
         {
             "id": 16,
             "content":"fab drops",
             "planet_conditions":["land"],
-            "stage_conditions":["earlygame"]
+            "stage_conditions":["earlygame"],
+            "factory_conditions":["bot","vehicle"]
         },
         {
             "id": 17,
             "content":"inferno drop",
             "planet_conditions":["land"],
-            "stage_conditions":["earlygame"]
+            "stage_conditions":["earlygame"],
+            "factory_conditions":["vehicle"]
         },
         {
             "id": 18,
             "content":"spark drop",
             "planet_conditions":["land"],
-            "stage_conditions":["earlygame"]
+            "stage_conditions":["earlygame"],
+            "factory_conditions":["bot"]
         },
         {
             "id": 19,
             "content":"commander rush",
-            "planet_conditions":["land","naval"],
-            "stage_conditions":["earlygame"]
+            "planet_conditions":["any"],
+            "stage_conditions":["earlygame"],
+            "factory_conditions":["any"],
+            "weight":0.2
         },
         {
             "id": 20,
             "content":"boost first factory",
-            "planet_conditions":["land","naval"],
-            "stage_conditions":["earlygame"]
+            "planet_conditions":["any"],
+            "stage_conditions":["earlygame"],
+            "factory_conditions":["any"]
         },
         {
             "id": 21,
             "content":"build first t2 as proxy",
-            "planet_conditions":["land","naval"],
-            "stage_conditions":["earlygame"]
+            "planet_conditions":["any"],
+            "stage_conditions":["earlygame"],
+            "factory_conditions":["any"]
         },
         {
             "id": 22,
             "content":"piranha spam",
             "planet_conditions":["naval"],
-            "stage_conditions":["earlygame"]
+            "stage_conditions":["earlygame"],
+            "factory_conditions":["naval"]
         },
         {
             "id": 23,
             "content":"make an early barnacle",
             "planet_conditions":["naval"],
-            "stage_conditions":["earlygame"]
+            "stage_conditions":["earlygame"],
+            "factory_conditions":["naval"]
         },
         {
             "id": 24,
             "content":"aggressive naval proxy",
             "planet_conditions":["naval"],
-            "stage_conditions":["modifier","earlygame","midgame","endgame"]
+            "stage_conditions":["modifier"],
+            "factory_conditions":["naval"]
         },
         {
             "id": 25,
             "content":"drifter heavy",
             "planet_conditions":["naval","land"],
-            "stage_conditions":["modifier","earlygame"]
+            "stage_conditions":["modifier","earlygame"],
+            "factory_conditions":["vehicle"]
         },
         {
             "id": 26,
             "content":"early invasion",
             "planet_conditions":["orbital"],
-            "stage_conditions":["earlygame"]
+            "stage_conditions":["earlygame"],
+            "factory_conditions":["any"]
         },
         {
             "id": 27,
             "content":"teleporter rush",
             "planet_conditions":["orbital"],
-            "stage_conditions":["earlygame"]
+            "stage_conditions":["earlygame"],
+            "factory_conditions":["any"]
         },
         {
             "id": 28,
             "content":"reclaim heavy",
+            "planet_conditions":["any"],
+            "stage_conditions":["modifier"],
+            "factory_conditions":["any"]
+        },
+        {
+            "id": 29,
+            "content":"spam torpedo launchers",
+            "planet_conditions":["naval"],
+            "stage_conditions":["earlygame","midgame"],
+            "factory_conditions":["any"]
+        },
+        {
+            "id": 30,
+            "content":"spam kaiju",
+            "planet_conditions":["naval"],
+            "stage_conditions":["midgame","endgame"],
+            "factory_conditions":["naval"]
+        },
+        {
+            "id": 31,
+            "content":"build manhattan first",
+            "planet_conditions":["land"],
+            "stage_conditions":["midgame"],
+            "factory_conditions":["vehicle"]
+        },
+        {
+            "id": 32,
+            "content":"t2 bot drop",
+            "planet_conditions":["land"],
+            "stage_conditions":["midgame","endgame"],
+            "factory_conditions":["bot"]
+        },
+        {
+            "id": 33,
+            "content":"spam colonels",
+            "planet_conditions":["land"],
+            "stage_conditions":["midgame","endgame"],
+            "factory_conditions":["bot"]
+        },
+        {
+            "id": 34,
+            "content":"spam bluehawk",
+            "planet_conditions":["land"],
+            "stage_conditions":["midgame","endgame"],
+            "factory_conditions":["bot"]
+        },
+        {
+            "id": 35,
+            "content":"spam boombots",
+            "planet_conditions":["land"],
+            "stage_conditions":["earlygame","midgame","endgame"],
+            "factory_conditions":["bot"]
+        },
+        {
+            "id": 36,
+            "content":"build hornet early",
             "planet_conditions":["land","naval"],
-            "stage_conditions":["modifier"]
+            "stage_conditions":["midgame","endgame"],
+            "factory_conditions":["air"]
+        },
+        {
+            "id": 37,
+            "content":"make wyrm snipe",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["midgame","endgame"],
+            "factory_conditions":["air"]
+        },
+        {
+            "id": 38,
+            "content":"build angel first",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["midgame","endgame"],
+            "factory_conditions":["air"]
+        },
+        {
+            "id": 39,
+            "content":"no t2 fighters",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["modifier"],
+            "factory_conditions":["air"]
+        },
+        {
+            "id": 40,
+            "content":"no kestrels",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["modifier"],
+            "factory_conditions":["air"]
+        },
+        {
+            "id": 41,
+            "content":"build t2 fabricator first",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["midgame"],
+            "factory_conditions":["any"]
+        },
+        {
+            "id": 42,
+            "content":"build nuke early",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["endgame"],
+            "factory_conditions":["any"]
+        },
+        {
+            "id": 43,
+            "content":"build a titan early",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["endgame"],
+            "factory_conditions":["any"]
+        },
+        {
+            "id": 44,
+            "content":"spam omegas",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["endgame"],
+            "factory_conditions":["orbital"]
+        },
+        {
+            "id": 45,
+            "content":"build unit cannon",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["endgame"],
+            "factory_conditions":["any"]
+        },
+        {
+            "id": 46,
+            "content":"build holkins",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["endgame"],
+            "factory_conditions":["any"]
+        },
+        {
+            "id": 47,
+            "content":"make sxx snipe",
+            "planet_conditions":["orbital"],
+            "stage_conditions":["endgame"],
+            "factory_conditions":["orbital"]
+        },
+        {
+            "id": 48,
+            "content":"make omega snipe",
+            "planet_conditions":["orbital"],
+            "stage_conditions":["endgame"],
+            "factory_conditions":["orbital"]
+        },
+        {
+            "id": 49,
+            "content":"spam shellers",
+            "planet_conditions":["land"],
+            "stage_conditions":["endgame"],
+            "factory_conditions":["vehicle"]
+        },
+        {
+            "id": 50,
+            "content":"spam gile",
+            "planet_conditions":["land"],
+            "stage_conditions":["endgame"],
+            "factory_conditions":["bot"]
+        },
+        {
+            "id": 51,
+            "content":"slammer drop",
+            "planet_conditions":["land"],
+            "stage_conditions":["midgame","endgame"],
+            "factory_conditions":["bot"]
+        },
+        {
+            "id": 52,
+            "content":"make hornet snipe",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["midgame","endgame"],
+            "factory_conditions":["air"]
+        },
+        {
+            "id": 53,
+            "content":"spam horsefly",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["midgame","endgame"],
+            "factory_conditions":["air"]
         },
         {
             "id": -1,
@@ -192,19 +460,7 @@
         },
         {
             "id": -1,
-            "content":"",
-            "planet_conditions":[],
-            "stage_conditions":[]
-        },
-        {
-            "id": -1,
-            "content":"",
-            "planet_conditions":[],
-            "stage_conditions":[]
-        },
-        {
-            "id": -1,
-            "content":"",
+            "content":"copy paste",
             "planet_conditions":[],
             "stage_conditions":[]
         }
@@ -213,4 +469,5 @@
 
     
 }
+
 

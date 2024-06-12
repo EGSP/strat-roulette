@@ -74,12 +74,6 @@
                                 <span class="text-accent" data-bind="text: loc(content)"></span>
                             </div>
                         </div>
-                        <ul class="tasks">
-                            <li class="task">
-                                <img class="micro" src="coui://ui/mods/mod.roulette/img/plan.png" />
-                                <span class="text-accent" data-bind="text: loc(modifier)"></span>
-                            </li>
-                        </ul>
 
                     </div>
                     <hr class="medium gradient-ghost-right" />
@@ -90,27 +84,22 @@
                             <loc>Early Game </loc>
                         </h10>
 
-                        <div id="factories-t1" class="factories" data-bind="foreach: openingFacs">
+                        <div id="factories-t1" class="factories" data-bind="foreach: earlygame_factories">
                             <div id="factory-t1-entry" class="factory-entry-small">
-                                <img style="height: 40px; width: 40px;"
-                                    data-bind="attr: { src: 'coui://pa/units/' + $data.buildBar + '.png' }" />
-                                <div class="factory-entry-text" data-bind="text: loc(factory)" />
+                                <img style="height: 40px; width: 40px;" data-bind="attr: { src: icon }" />
+                                <div class="factory-entry-text" data-bind="text: loc(type)" />
                             </div>
-                            <div data-bind="if: $index() < ($parent.openingFacs().length - 1)">
+                            <div data-bind="if: $index() < ($parent.earlygame_factories().length - 1)">
                                 <img class="factory-entry-arrow-small"
                                     src="coui://ui/mods/mod.roulette/img/arrow-right.png" />
                             </div>
                         </div>
-                        <ul class="tasks">
-                            <li class="task">
+                        <div class="tasks" data-bind="foreach: earlygame_tasks">
+                            <div>
                                 <img class="micro" src="coui://ui/mods/mod.roulette/img/mark.png" />
-                                <span class="text-primary" data-bind="text: loc(openingFabsName)"></span>
-                            </li>
-                            <li class="task">
-                                <img class="micro" src="coui://ui/mods/mod.roulette/img/mark.png" />
-                                <span class="text-primary" data-bind="text: loc(earlyGame)"></span>
-                            </li>
-                        </ul>
+                                <span class="text-accent" data-bind="text: loc(content)"></span>
+                            </div>
+                        </div>
                     </div>
                     <hr class="medium gradient-ghost-right" />
 
@@ -120,23 +109,22 @@
                             <loc>Mid Game </loc>
                         </h10>
 
-                        <div id="factories-t2" class="factories" data-bind="foreach: openingT2Facs">
+                        <div id="factories-t2" class="factories" data-bind="foreach: midgame_factories">
                             <div id="factory-t2-entry" class="factory-entry">
-                                <img style="height: 60px; width: 60px;"
-                                    data-bind="attr: { src: 'coui://pa/units/' + $data.buildBar + '.png' }" />
-                                <div class="factory-entry-text" data-bind="text: loc(factory)" />
+                                <img style="height: 60px; width: 60px;" data-bind="attr: { src: icon}" />
+                                <div class="factory-entry-text" data-bind="text: loc(type)" />
                             </div>
-                            <div data-bind="if: $index() < ($parent.openingT2Facs().length - 1)">
+                            <div data-bind="if: $index() < ($parent.midgame_factories().length - 1)">
                                 <img class="factory-entry-arrow"
                                     src="coui://ui/mods/mod.roulette/img/arrow-right.png" />
                             </div>
                         </div>
-                        <ul class="tasks">
-                            <li class="task">
+                        <div class="tasks" data-bind="foreach: midgame_tasks">
+                            <div>
                                 <img class="micro" src="coui://ui/mods/mod.roulette/img/mark.png" />
-                                <span class="text-primary" data-bind="text: loc(midGame)"></span>
-                            </li>
-                        </ul>
+                                <span class="text-accent" data-bind="text: loc(content)"></span>
+                            </div>
+                        </div>
                     </div>
                     <hr class="medium gradient-ghost-right" />
 
@@ -145,12 +133,12 @@
                         <h10 class="text-title">
                             <loc>Endgame </loc>
                         </h10>
-                        <ul class="tasks">
-                            <li class="task">
+                        <div class="tasks" data-bind="foreach: endgame_tasks">
+                            <div>
                                 <img class="micro" src="coui://ui/mods/mod.roulette/img/mark.png" />
-                                <span class="text-primary" data-bind="text: loc(endGame)"></span>
-                            </li>
-                        </ul>
+                                <span class="text-accent" data-bind="text: loc(content)"></span>
+                            </div>
+                        </div>
 
                     </div>
                     <!-- <hr class="medium gradient-ghost-right" /> -->

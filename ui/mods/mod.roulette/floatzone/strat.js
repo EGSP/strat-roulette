@@ -40,6 +40,9 @@ function stratModel() {
     self.midgame_tasks = ko.observableArray([]);
     self.endgame_tasks = ko.observableArray([]);
 
+    self.earlygame_factories = ko.observableArray([]);
+    self.midgame_factories = ko.observableArray([]);
+
 }
 stratModel = new stratModel();
 
@@ -256,6 +259,7 @@ var playstyleModifier = [
 
 // loaded data
 var catalog = {
+    factories: [],
     max_modifiers_count: 0,
     max_earlygame_count: 0,
     max_midgame_count: 0,
@@ -321,16 +325,21 @@ function get_random_array_value(array) {
  */
 function get_random_value_by_weight(array) {
     if (array.length == 0) { return undefined }
-    // array element should be objects with the weight property
-    if (array[0].weight == null) { return undefined }
-
+    
     // multiply random value between 0..1 by sum of all weights
-    var weight_pointer = Math.random() * _.reduce(array, function (acc, obj) { acc + obj.weight }, 0);
+    var weight_pointer = Math.random() * _.reduce(array, function (acc, obj) 
+    { 
+        if(obj.weight == undefined) { return acc+1 }
+        return acc + obj.weight
+    }, 0);
     // var weight_pointer = Math.random();
+
+    console.log("weight_pointer: "+weight_pointer)
 
     var weight_pointer_treshold = 0
     for (var i = 0; i < array.length; i++) {
-        weight_pointer_treshold += array[i].weight
+        weight_pointer_treshold += (array[i].weight || 1)
+        console.log("weight_pointer_treshold: "+weight_pointer_treshold)
         if (weight_pointer < weight_pointer_treshold) {
             return {
                 value: array[i],
@@ -341,7 +350,7 @@ function get_random_value_by_weight(array) {
     return undefined
 }
 
-function get_multiple_random_array_value(original_array, count) {
+function get_multiple_random_array_values(original_array, count) {
     if (count > original_array.length) { count = original_array.length }
 
     var results = []
@@ -355,7 +364,7 @@ function get_multiple_random_array_value(original_array, count) {
     return results
 }
 
-function get_multiple_random_value_by_weight(original_array, count) {
+function get_multiple_random_array_values_by_weight(original_array, count) {
     if (count > original_array.length) { count = original_array.length }
 
     var results = []
@@ -610,8 +619,15 @@ model.generateStrategy = function () {
     // console.log(stratModel.modifiers)
 
     var new_strategy = get_new_strategy()
-    console.log("new strategy/:")
-    console.log(new_strategy)
+    stratModel.modifiers(new_strategy.modifiers)
+    stratModel.earlygame_tasks(new_strategy.earlygame_tasks)
+    stratModel.midgame_tasks(new_strategy.midgame_tasks)
+    stratModel.endgame_tasks(new_strategy.endgame_tasks)
+    stratModel.earlygame_factories(new_strategy.earlygame_factories)
+    stratModel.midgame_factories(new_strategy.midgame_factories)
+
+    // console.log("new strategy/:")
+    // debug(new_strategy)
 }
 
 // STRATEGY GENERATOR -----------------------------------------------------------
@@ -624,6 +640,8 @@ function get_new_strategy() {
     var midgame_tasks_count = get_random_value_inclusive(1, catalog.max_midgame_count)
     var endgame_tasks_count = get_random_value_inclusive(1, catalog.max_endgame_count)
 
+
+
     var items_copy = catalog.items.slice()
     // remove unused items with id = -1
     items_copy = _.filter(items_copy, function (x) {
@@ -631,11 +649,47 @@ function get_new_strategy() {
     });
 
     var planet_conditions = get_selected_planet_conditions()
+    debug(planet_conditions)
 
+    // example of struct:
+    // {
+    //     factories: ["naval", "naval","air","naval"],
+    //     types: ["naval", "air"],
+    //}
+    const earlygame_factories_order_lengths =[
+        {
+            value:2,
+            weight:2.33
+        },
+        {
+            value:3,
+            weight:6.10
+        },
+        {
+            value:4,
+            weight:1.44
+        },
+        {
+            value:5,
+            weight:0.34
+        }
+    ]
 
-    var modifiers = get_multiple_random_array_value(
+    var earlygame_factories_order_length = get_random_value_by_weight(earlygame_factories_order_lengths).value.value
+    var earlygame_factories_order = get_factories_order(planet_conditions, 1,
+        earlygame_factories_order_length
+    )
+    var midgame_factories_order = get_factories_order(planet_conditions, 2,
+        2
+    )
+
+    var modifiers = get_multiple_random_array_values_by_weight(
         _.filter(items_copy, function (x) {
-            return does_item_match_conditions(planet_conditions, "modifier", x);
+            return does_item_match_conditions(
+                planet_conditions, ["modifier"],
+                // merged earlygame and midgame factory types
+                earlygame_factories_order.types.concat(midgame_factories_order.types),
+                x);
         }),
         modifiers_count)
     // remove selected items by filter
@@ -643,27 +697,36 @@ function get_new_strategy() {
         return !_.includes(modifiers, x);
     });
 
-    var earlygame_tasks = get_multiple_random_array_value(
+    // EARLYGAME
+    var earlygame_tasks = get_multiple_random_array_values_by_weight(
         _.filter(items_copy, function (x) {
-            return does_item_match_conditions(planet_conditions, "earlygame", x);
+            return does_item_match_conditions(
+                planet_conditions, ["earlygame"],
+                earlygame_factories_order.types,
+                x);
         }),
         earlygame_tasks_count)
     items_copy = _.filter(items_copy, function (x) {
         return !_.includes(earlygame_tasks, x);
     });
 
-    var midgame_tasks = get_multiple_random_array_value(
+    // MIDGAME
+    var midgame_tasks = get_multiple_random_array_values_by_weight(
         _.filter(items_copy, function does_item_match_conditions_midgame(x) {
-            return does_item_match_conditions(planet_conditions, "midgame", x);
+            return does_item_match_conditions(planet_conditions, ["midgame"], 
+                midgame_factories_order.types, 
+                x);
         }),
         midgame_tasks_count)
     items_copy = _.filter(items_copy, function (x) {
         return !_.includes(midgame_tasks, x);
     });
 
-    var endgame_tasks = get_multiple_random_array_value(
+    // ENDGAME
+    var endgame_tasks = get_multiple_random_array_values_by_weight(
         _.filter(items_copy, function does_item_match_conditions_endgame(x) {
-            return does_item_match_conditions(planet_conditions, "endgame", x);
+            return does_item_match_conditions(planet_conditions, ["endgame"],
+                ["any"], x);
         }),
         endgame_tasks_count)
 
@@ -680,7 +743,10 @@ function get_new_strategy() {
         modifiers: result[0],
         earlygame_tasks: result[1],
         midgame_tasks: result[2],
-        endgame_tasks: result[3]
+        endgame_tasks: result[3],
+
+        earlygame_factories: earlygame_factories_order.factories,
+        midgame_factories: midgame_factories_order.factories
     }
 }
 
@@ -705,20 +771,103 @@ function get_selected_planet_conditions() {
 }
 
 /**
- * Checks if the given item matches the specified planet and stage conditions.
+ * Generates the order of factories based on planet conditions, tier, and order length.
+ *
+ * @param {Array} planet_conditions - The conditions of the planet.
+ * @param {number} tier - The selected tier for factories.
+ * @param {number} order_length - The length of the order to generate.
+ * @return {Object} An object containing the ordered factories and types.
+ * @example 
+ * var order = get_factories_order(["land"], 1, 3)
+ * console.log(order)
+ * // { factories: ["vehicle", "bot", "bot", "vehicle"], types: ["vehicle", "bot"] }
+ */
+function get_factories_order(planet_conditions, tier, order_length) {
+    var factories_copy = catalog.factories.slice()
+
+    // FILTER FACTORIES
+    // remove all factories that are not the selected tier
+    factories_copy = _.filter(factories_copy, function (x) {
+        return x.tier == tier;
+    })
+
+    var air_factory_check = 0;
+
+    // remove all land factories if land is not selected
+    if (!_.includes(planet_conditions, "land")) {
+        air_factory_check++;
+        console.log("land not selected")
+        factories_copy = _.filter(factories_copy, function (x) {
+            console.log(x.type+" keep " +(x.type != "bot" && x.type != "vehicle"))
+            return x.type != "bot" && x.type != "vehicle";
+        });
+    }
+
+    if (!_.includes(planet_conditions, "naval")) {
+        air_factory_check++;
+        factories_copy = _.filter(factories_copy, function (x) {
+            return x.type != "naval";
+        });
+    }
+
+    if (air_factory_check == 2) {
+        factories_copy = _.filter(factories_copy, function (x) {
+            return x.type != "air";
+        });
+    }
+
+    if (!_.includes(planet_conditions, "orbital")) {
+        factories_copy = _.filter(factories_copy, function (x) {
+            return x.type != "orbital";
+        });
+    }
+
+    debug(factories_copy)
+
+    // GENERATE ORDER
+    var factory_order = {
+        factories: [],
+        // order of types garantees appearance of same type in order 
+        types: []
+    }
+
+    for (var i = 0; i < order_length; i++) {
+        var random_index = get_random_value_inclusive(0, factories_copy.length - 1)
+        var factory = factories_copy[random_index]
+
+        // push new factory in order
+        factory_order.factories.push(factory)
+
+        // push new type in order if it doesn't exist
+        if (!_.includes(factory_order.types, factory.type)) {
+            factory_order.types.push(factory.type)
+        }
+    }
+
+    return factory_order
+}
+
+
+/**
+ * Checks if the given item matches all the specified conditions.
  *
  * @param {Array} planet_conditions - An array of planet conditions to check against.
- * @param {string} stage_condition - The stage condition to check against.
+ * @param {Array} stage_conditions - An array of stage conditions to check against.
+ * @param {Array} factory_conditions - An array of factory conditions to check against.
  * @param {Object} item - The item to check.
  * @return {boolean} Returns true if the item matches all the conditions, otherwise false.
  */
-function does_item_match_conditions(planet_conditions, stage_condition, item) {
+function does_item_match_conditions(planet_conditions, stage_conditions, factory_conditions, item) {
     if (does_item_match_any_planet_conditions(planet_conditions, item) == false) {
         return false
     }
-    if (does_item_match_stage_condition(stage_condition, item) == false) {
+    if (does_item_match_any_stage_conditions(stage_conditions, item) == false) {
         return false
     }
+    if (does_item_match_any_factory_conditions(factory_conditions, item) == false) {
+        return false
+    }
+
     return true
 }
 
@@ -750,6 +899,10 @@ function does_item_match_any_planet_conditions(conditions, item) {
     // console.log("does_item_match_any_planet_conditions")
     // console.log(item)
     // console.log(conditions)
+    if (_.includes(item.planet_conditions, "any")) {
+        return true
+    }
+
     for (var i = 0; i < conditions.length; i++) {
         if (_.includes(item.planet_conditions, conditions[i])) {
             return true
@@ -759,17 +912,32 @@ function does_item_match_any_planet_conditions(conditions, item) {
 }
 
 /**
- * Checks if the given item matches the specified stage condition.
+ * Checks if the given item matches any of the specified stage conditions.
  *
- * @param {string} condition - The stage condition to check against.
+ * @param {Array} stage_conditions - An array of stage conditions to check against.
  * @param {Object} item - The item to check.
- * @return {boolean} Returns true if the item matches the condition, otherwise false.
+ * @return {boolean} Returns true if the item matches any of the stage conditions, otherwise false.
  */
-function does_item_match_stage_condition(condition, item) {
-    if (!_.includes(item.stage_conditions, condition)) {
-        return false
+function does_item_match_any_stage_conditions(stage_conditions, item) {
+    for (var i = 0; i < stage_conditions.length; i++) {
+        if (_.includes(item.stage_conditions, stage_conditions[i])) {
+            return true
+        }
     }
-    return true
+    return false
+}
+
+function does_item_match_any_factory_conditions(factory_conditions, item) {
+    if (_.includes(item.factory_conditions, "any")) {
+        return true
+    }
+
+    for (var i = 0; i < factory_conditions.length; i++) {
+        if (_.includes(item.factory_conditions, factory_conditions[i])) {
+            return true
+        }
+    }
+    return false
 }
 
 /**
@@ -842,12 +1010,9 @@ function resolve_conflicting_items(items_arrays) {
     }
 }
 
-// function get_earlygame_tasks() {
-//     // get random count value based on modifiers length
-//     var count = get_random_value_inclusive(1, earlygame_tasks_catalog.max_count)
-//     var values = get_multiple_random_array_value(earlygame_tasks_catalog.items, count)
-//     return values
-// }
+function debug(object){
+    console.log(JSON.stringify(object,null,2))
+}
 
 
 model.processGenerateClick = function () {
