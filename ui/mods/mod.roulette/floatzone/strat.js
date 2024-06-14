@@ -35,6 +35,7 @@ function stratModel() {
     self.stratGenerated = ko.observable(false)
     self.meme = ko.observable("")
 
+    // ACTUALLY USED OBSERVABLES
     self.modifiers = ko.observableArray([]);
     self.earlygame_tasks = ko.observableArray([]);
     self.midgame_tasks = ko.observableArray([]);
