@@ -64,12 +64,14 @@
                     <img id="orbital-button-img" class="mini" src='coui://ui/mods/mod.roulette/img/planet-no.png' />
                 </button>
 
-                <hr class="invisible" />
+                <!-- REMOVED THIS BUTTON CAUSE OF VISUAL COHESION: TOOLTIPS ALIGHN, SHOW/HIDE PLACEMENT -->
+                <!-- TOOLTIP GLOBAL INSANCE KEEPS FIRST DATA-PLACEMENT VALUE (FUUUUCK) -->
+                <!-- <hr class="invisible" />
                 <button class="quad common btn-default" onclick="model.toggleSwitch()" data-bind="tooltip: '!LOC:Switch frame orientation', 
                     click_sound: 'default',
                     rollover_sound: 'default'" data-placement="right">
                     <img class="mini" src='coui://ui/mods/mod.roulette/img/switch.png' />
-                </button>
+                </button> -->
             </div>
 
         </div>
@@ -83,7 +85,7 @@
                 </div>
                 <hr class="tall" />
 
-                <div class="section_content" data-bind="visible: stratGenerated">
+                <div class="section_content" data-bind="visible: is_strategy_ready">
 
                     <!-- MODIFIERS -->
                     <div id="modifiers-entry" class="entry">
@@ -165,23 +167,6 @@
                         </div>
 
                     </div>
-                    <!-- <hr class="medium gradient-ghost-right" /> -->
-
-                    <!-- <div class="entry">
-
-                        <h10 class="stratTitles"><i>Meme </i>
-                            <loc class="displayed_difficulty" data-bind="text: memeDifficulty" />
-                        </h10><br>
-                        <loc class="displayed_text" data-bind="text: meme" />
-
-                    </div>
-                    <hr class="medium gradient-ghost-right" /> -->
-                    <!-- <div class="entry">
-                        <h10 class="stratTitles"><i>Hard Mode Modifier </i>
-                            <loc class="displayed_difficulty" data-bind="text: hardModifierDifficulty" />
-                        </h10><br>
-                        <loc class="displayed_text" data-bind="text: hardModifier" />
-                    </div> -->
                 </div>
 
             </div>
