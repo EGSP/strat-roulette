@@ -266,7 +266,7 @@
         {
             "id": 27,
             "content":"teleporter rush",
-            "planet_conditions":["orbital"],
+            "planet_conditions":["land","orbital"],
             "stage_conditions":["earlygame"],
             "factory_conditions":["any"]
         },
@@ -453,10 +453,10 @@
             "factory_conditions":["air"]
         },
         {
-            "id": -1,
-            "content":"",
-            "planet_conditions":[],
-            "stage_conditions":[]
+            "id": 54,
+            "content":"no walls",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":[""]
         },
         {
             "id": -1,

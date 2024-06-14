@@ -681,7 +681,7 @@ function get_new_strategy() {
         earlygame_factories_order_length
     )
     var midgame_factories_order = get_factories_order(planet_conditions, 2,
-        2
+        2, false
     )
 
     var modifiers = get_multiple_random_array_values_by_weight(
@@ -783,7 +783,7 @@ function get_selected_planet_conditions() {
  * console.log(order)
  * // { factories: ["vehicle", "bot", "bot", "vehicle"], types: ["vehicle", "bot"] }
  */
-function get_factories_order(planet_conditions, tier, order_length) {
+function get_factories_order(planet_conditions, tier, order_length, allow_same = true) {
     var factories_copy = catalog.factories.slice()
 
     // FILTER FACTORIES
@@ -842,6 +842,12 @@ function get_factories_order(planet_conditions, tier, order_length) {
         // push new type in order if it doesn't exist
         if (!_.includes(factory_order.types, factory.type)) {
             factory_order.types.push(factory.type)
+            if(!allow_same){
+                // exlude same type
+                factories_copy = _.filter(factories_copy, function (x) {
+                    return x.type != factory.type;
+                })
+            }
         }
     }
 
