@@ -15,6 +15,7 @@ function stratModel() {
     self.memeDifficulty = ko.observable(1)
     self.hardModifierDifficulty = ko.observable(1)
 
+    self.land = ko.observable(true)
     self.naval = ko.observable(false)
     self.hybrid = ko.observable(false)
     self.orbital = ko.observable(false)
@@ -111,8 +112,56 @@ model.toggleSwitch = function () {
 
     console.log(status);
 }
+
+/**
+ * Checks if any of the planet options in the `stratModel` are enabled, and returns `false` if only one is enabled, and `true` otherwise.
+ *
+ * @return {boolean} `false` if only one planet option is enabled, `true` otherwise.
+ */
+function can_disable_planet_option() {
+    var counter = 0;
+    if (stratModel.land() == true) {
+        counter++;
+    }
+    if (stratModel.naval() == true) {
+        counter++;
+    }
+    if (stratModel.orbital() == true) {
+        counter++;
+    }
+    if (counter == 1) {
+        return false;
+    }
+
+    return true;
+}
+
+model.toggleLand = function () {
+    var value = stratModel.land();
+    if(value == true){
+        if(can_disable_planet_option() == false){
+            return;
+        }
+    }
+
+    stratModel.land(!value)
+    console.log(stratModel.land())
+    if (stratModel.land() == true) {
+        $("#land-button-img").attr("src", "coui://ui/mods/mod.roulette/img/land.png");
+    } else {
+        $("#land-button-img").attr("src", "coui://ui/mods/mod.roulette/img/land-no.png");
+    }
+}
+
 model.toggleNaval = function () {
-    stratModel.naval(!stratModel.naval())
+    var value = stratModel.naval();
+    if(value == true){
+        if(can_disable_planet_option() == false){
+            return;
+        }
+    }
+
+    stratModel.naval(!value)
     console.log(stratModel.naval())
     if (stratModel.naval() == true) {
         $("#naval-button-img").attr("src", "coui://ui/mods/mod.roulette/img/ship.png");
@@ -122,7 +171,14 @@ model.toggleNaval = function () {
 }
 
 model.toggleOrbital = function () {
-    stratModel.orbital(!stratModel.orbital())
+    var value = stratModel.orbital();
+    if(value == true){
+        if(can_disable_planet_option() == false){
+            return;
+        }
+    }
+
+    stratModel.orbital(!value)
     console.log(stratModel.orbital())
     if (stratModel.orbital() == true) {
         $("#orbital-button-img").attr("src", "coui://ui/mods/mod.roulette/img/planet.png");
@@ -326,21 +382,20 @@ function get_random_array_value(array) {
  */
 function get_random_value_by_weight(array) {
     if (array.length == 0) { return undefined }
-    
+
     // multiply random value between 0..1 by sum of all weights
-    var weight_pointer = Math.random() * _.reduce(array, function (acc, obj) 
-    { 
-        if(obj.weight == undefined) { return acc+1 }
+    var weight_pointer = Math.random() * _.reduce(array, function (acc, obj) {
+        if (obj.weight == undefined) { return acc + 1 }
         return acc + obj.weight
     }, 0);
     // var weight_pointer = Math.random();
 
-    console.log("weight_pointer: "+weight_pointer)
+    // console.log("weight_pointer: " + weight_pointer)
 
     var weight_pointer_treshold = 0
     for (var i = 0; i < array.length; i++) {
         weight_pointer_treshold += (array[i].weight || 1)
-        console.log("weight_pointer_treshold: "+weight_pointer_treshold)
+        console.log("weight_pointer_treshold: " + weight_pointer_treshold)
         if (weight_pointer < weight_pointer_treshold) {
             return {
                 value: array[i],
@@ -657,28 +712,28 @@ function get_new_strategy() {
     //     factories: ["naval", "naval","air","naval"],
     //     types: ["naval", "air"],
     //}
-    const earlygame_factories_order_lengths =[
+    const earlygame_factories_order_lengths = [
         {
-            value:2,
-            weight:2.33
+            value: 2,
+            weight: 2.33
         },
         {
-            value:3,
-            weight:6.10
+            value: 3,
+            weight: 6.10
         },
         {
-            value:4,
-            weight:1.44
+            value: 4,
+            weight: 1.44
         },
         {
-            value:5,
-            weight:0.34
+            value: 5,
+            weight: 0.34
         }
     ]
 
     var earlygame_factories_order_length = get_random_value_by_weight(earlygame_factories_order_lengths).value.value
     var earlygame_factories_order = get_factories_order(planet_conditions, 1,
-        earlygame_factories_order_length
+        earlygame_factories_order_length, true
     )
     var midgame_factories_order = get_factories_order(planet_conditions, 2,
         2, false
@@ -714,8 +769,8 @@ function get_new_strategy() {
     // MIDGAME
     var midgame_tasks = get_multiple_random_array_values_by_weight(
         _.filter(items_copy, function does_item_match_conditions_midgame(x) {
-            return does_item_match_conditions(planet_conditions, ["midgame"], 
-                midgame_factories_order.types, 
+            return does_item_match_conditions(planet_conditions, ["midgame"],
+                midgame_factories_order.types,
                 x);
         }),
         midgame_tasks_count)
@@ -757,18 +812,20 @@ function get_new_strategy() {
  * @return {Array} An array of strings representing the planet conditions. The array contains "orbital" if the selected model is orbital, "naval" if the selected model is naval, and "land" if the selected model is not naval.
  */
 function get_selected_planet_conditions() {
-    var condtions = []
+    var conditions = []
     if (stratModel.orbital() == true) {
-        condtions.push("orbital")
+        conditions.push("orbital")
     }
 
     if (stratModel.naval() == true) {
-        condtions.push("naval")
-    } else {
-        condtions.push("land")
+        conditions.push("naval")
+    }
+    
+    if(stratModel.land() == true) {
+        conditions.push("land")
     }
 
-    return condtions
+    return conditions
 }
 
 /**
@@ -783,7 +840,7 @@ function get_selected_planet_conditions() {
  * console.log(order)
  * // { factories: ["vehicle", "bot", "bot", "vehicle"], types: ["vehicle", "bot"] }
  */
-function get_factories_order(planet_conditions, tier, order_length, allow_same = true) {
+function get_factories_order(planet_conditions, tier, order_length, allow_same) {
     var factories_copy = catalog.factories.slice()
 
     // FILTER FACTORIES
@@ -799,7 +856,7 @@ function get_factories_order(planet_conditions, tier, order_length, allow_same =
         air_factory_check++;
         console.log("land not selected")
         factories_copy = _.filter(factories_copy, function (x) {
-            console.log(x.type+" keep " +(x.type != "bot" && x.type != "vehicle"))
+            console.log(x.type + " keep " + (x.type != "bot" && x.type != "vehicle"))
             return x.type != "bot" && x.type != "vehicle";
         });
     }
@@ -833,16 +890,26 @@ function get_factories_order(planet_conditions, tier, order_length, allow_same =
     }
 
     for (var i = 0; i < order_length; i++) {
+        if(factories_copy.length == 0) {
+            console.log("no factories left")
+            debug(planet_conditions, "planet conditions")
+            debug(tier, "tier")
+            debug(factory_order, "factory order")
+            break;
+        }
+
         var random_index = get_random_value_inclusive(0, factories_copy.length - 1)
         var factory = factories_copy[random_index]
 
         // push new factory in order
         factory_order.factories.push(factory)
 
+        debug(factory, "factory")
+
         // push new type in order if it doesn't exist
         if (!_.includes(factory_order.types, factory.type)) {
             factory_order.types.push(factory.type)
-            if(!allow_same){
+            if (!allow_same) {
                 // exlude same type
                 factories_copy = _.filter(factories_copy, function (x) {
                     return x.type != factory.type;
@@ -1017,8 +1084,8 @@ function resolve_conflicting_items(items_arrays) {
     }
 }
 
-function debug(object){
-    console.log(JSON.stringify(object,null,2))
+function debug(object, message) {
+    console.log(JSON.stringify(object, null, 2) +" : " + ((message == null)?"":message))
 }
 
 

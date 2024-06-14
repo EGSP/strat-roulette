@@ -171,7 +171,7 @@ hr.invisible {
     padding-top: 0px;
     font-size: 200%;
     /* background: linear-gradient(135deg, rgba(53, 53, 53, 0.38) 0%, rgba(255, 255, 255, 0) 100%) !important; */
-    display: inline-flex;
+    display: flex;
     flex-direction: row;
 }
 
@@ -197,6 +197,12 @@ hr.invisible {
     background-color: rgba(37, 37, 37, 1);
 }
 
+.buttons.primary {
+    display: table;
+    width: 30px;
+    background-color: rgba(37, 37, 37, 1);
+    
+}
 .buttons.secondary {
     display: table;
     width: 30px;

@@ -17,33 +17,57 @@
 
         <!-- BUTTONS -->
         <div id="buttons" class="buttons">
-            <!-- draggable area -->
-            <div class="pseudo-button">
-                <img class="mini" src='coui://ui/mods/mod.roulette/img/drag.png' />
+            <div id="buttons-primary" class="buttons primary">
+                <div class="pseudo-button" data-bind="tooltip: '!LOC:Drag to move frame', 
+                click_sound: 'default',
+                rollover_sound: 'default'" data-placement="right">
+                    <img class="mini" src='coui://ui/mods/mod.roulette/img/drag.png' />
+                </div>
+
+                <button class="quad common btn-default" id="generateStrat" onclick="model.stratLockEvent()"
+                    data-bind="tooltip: '!LOC:Lock/Unlock frame position', click_sound: 'default', rollover_sound: 'default'"
+                    data-placement="right">
+                    <img id='strat_lock' src='' class='mini' />
+                </button>
+                <button class="quad common btn-default" id="generateStrat" onclick="model.toggleStratUIExpanded()"
+                    data-bind="tooltip: '!LOC:Hide/Show frame', 
+            click_sound: 'default',
+            rollover_sound: 'default'" data-placement="right">
+                    <img id='strat_visible' src='' class='mini' />
+                </button>
             </div>
-            <button class="quad common btn-default" id="generateStrat" onclick="model.stratLockEvent()">
-                <img id='strat_lock' src='' class='mini' />
-            </button>
-            <button class="quad common btn-default" id="generateStrat" onclick="model.toggleStratUIExpanded()">
-                <img id='strat_visible' src='' class='mini' />
-            </button>
+
 
             <div id="buttons-secondary" class="buttons secondary" data-bind="visible: stratUIExpanded">
                 <hr class="invisible" />
-                <button class="tall common btn-default" id="generateStrat" onclick='model.processGenerateClick()'>
+                <button class="tall common btn-default" id="generateStrat" onclick="model.processGenerateClick()"
+                    data-bind="tooltip: '!LOC:Make new strategy', 
+                    click_sound: 'default',
+                    rollover_sound: 'default'" data-placement="right">
                     <img class="mini" src='coui://ui/mods/mod.roulette/img/dice.png' />
                 </button>
 
                 <hr class="invisible" />
-                <button class="quad common btn-default" onclick="model.toggleNaval()">
+                <button class="quad common btn-default" onclick="model.toggleLand()" data-bind="tooltip: '!LOC:Add land factories to strategy', 
+                    click_sound: 'default',
+                    rollover_sound: 'default'" data-placement="right">
+                    <img id="land-button-img" class="mini" src='coui://ui/mods/mod.roulette/img/land.png' />
+                </button>
+                <button class="quad common btn-default" onclick="model.toggleNaval()" data-bind="tooltip: '!LOC:Add naval factories to strategy', 
+                    click_sound: 'default',
+                    rollover_sound: 'default'" data-placement="right">
                     <img id="naval-button-img" class="mini" src='coui://ui/mods/mod.roulette/img/ship-no.png' />
                 </button>
-                <button class="quad common btn-default" onclick="model.toggleOrbital()">
+                <button class="quad common btn-default" onclick="model.toggleOrbital()" data-bind="tooltip: '!LOC:Add orbital factories to strategy', 
+                    click_sound: 'default',
+                    rollover_sound: 'default'" data-placement="right">
                     <img id="orbital-button-img" class="mini" src='coui://ui/mods/mod.roulette/img/planet-no.png' />
                 </button>
 
                 <hr class="invisible" />
-                <button class="quad common btn-default" onclick="model.toggleSwitch()">
+                <button class="quad common btn-default" onclick="model.toggleSwitch()" data-bind="tooltip: '!LOC:Switch frame orientation', 
+                    click_sound: 'default',
+                    rollover_sound: 'default'" data-placement="right">
                     <img class="mini" src='coui://ui/mods/mod.roulette/img/switch.png' />
                 </button>
             </div>
@@ -171,6 +195,7 @@
 
     ko.cleanNode(document.getElementById("content-viewport"));
     ko.applyBindings(stratModel, document.getElementById("content-viewport"));
+    ko.applyBindings(stratModel, document.getElementById("buttons-primary"));
     ko.applyBindings(stratModel, document.getElementById("buttons-secondary"));
 
     if (localStorage["frames_strat_frame_lockStatus"] == "true") {
