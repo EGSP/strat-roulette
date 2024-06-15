@@ -69,7 +69,12 @@
 
     "conflict_groups": [
         {"left":[7],"right":[15]},
-        {"left":[1],"right":[19]}
+        {"left":[1],"right":[19]},
+
+
+        {"left":[2],"right":[55100]},
+        {"left":[2],"right":[55]},
+        {"left":[2],"right":[55001]}
     ],
 
     "items": [
@@ -456,7 +461,23 @@
             "id": 54,
             "content":"no walls",
             "planet_conditions":["land","naval"],
-            "stage_conditions":[""]
+            "stage_conditions":["modifier"],
+            "factory_conditions":["any"]
+        },
+        {
+            "id": 55,
+            "content":[
+                {
+                    "id": 100,
+                    "content":"spam dox"
+                },
+                "spam sparks",
+                "spam boombots",
+                "spam grenadiers"
+            ],
+            "planet_conditions":["land"],
+            "stage_conditions":["earlygame"],
+            "factory_conditions":["bot"]
         },
         {
             "id": -1,
@@ -464,6 +485,21 @@
             "planet_conditions":[],
             "stage_conditions":[]
         }
+        ,
+        {
+            "id": -1,
+            "content":"copy paste",
+            "planet_conditions":[],
+            "stage_conditions":[]
+        }
+        ,
+        {
+            "id": -1,
+            "content":"copy paste",
+            "planet_conditions":[],
+            "stage_conditions":[]
+        }
+
 
     ]
 

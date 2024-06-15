@@ -44,7 +44,7 @@ model.processGenerateClick = function () {
     //$("#generateStrat").css("opacity",0.5)
     //_.delay(function(){$("#generateStrat").css("opacity",1.0)},3000)
     api.audio.playSoundFromFile("/pa/audio/roulette.wav");
-    
+
     var new_strategy = get_new_strategy()
     stratModel.modifiers(new_strategy.modifiers)
     stratModel.earlygame_tasks(new_strategy.earlygame_tasks)
@@ -98,10 +98,10 @@ model.toggleSwitch = function () {
 }
 
 var tooltipPosition = ko.observable("right")
-function update_tooltip_position () {
-    if(localStorage["frames_strat_frame_switchStatus"] == "true"){
+function update_tooltip_position() {
+    if (localStorage["frames_strat_frame_switchStatus"] == "true") {
         return tooltipPosition("right");
-    }else{
+    } else {
         return tooltipPosition("left");
     }
 }
@@ -133,8 +133,8 @@ model.toggleLand = function () {
     common_button_actions()
 
     var value = stratModel.land();
-    if(value == true){
-        if(can_disable_planet_option() == false){
+    if (value == true) {
+        if (can_disable_planet_option() == false) {
             return;
         }
     }
@@ -153,8 +153,8 @@ model.toggleNaval = function () {
     common_button_actions()
 
     var value = stratModel.naval();
-    if(value == true){
-        if(can_disable_planet_option() == false){
+    if (value == true) {
+        if (can_disable_planet_option() == false) {
             return;
         }
     }
@@ -173,8 +173,8 @@ model.toggleOrbital = function () {
     common_button_actions()
 
     var value = stratModel.orbital();
-    if(value == true){
-        if(can_disable_planet_option() == false){
+    if (value == true) {
+        if (can_disable_planet_option() == false) {
             return;
         }
     }
@@ -214,10 +214,62 @@ function load_data() {
     // }
     // loading catalog
     $.getJSON(data_folder_path.concat('catalog.json')).then(function (data) {
+        data_build_items(data)
+
         catalog = data
         console.log('catalog:/')
         console.log(catalog)
     });
+}
+
+const content_nested_id_multiplier = 1000;
+function data_build_items(catalog) {
+    // setup confilict ids
+    var generated_items = []
+    var being_removed_item_ids = []
+    var index = 0
+    while (index < catalog.items.length) {
+        var item = catalog.items[index]
+
+        // GENERATING NEW ITEMS FROM ORIGINAL ITEM
+        if (item.content.constructor === Array) {
+            var content_as_array = item.content
+            for (var i = 0; i < content_as_array.length; i++) {
+                var content_item = content_as_array[i]
+
+                // copy conditions from original item
+                var new_generated_item = {
+                    planet_conditions: item.planet_conditions,
+                    stage_conditions: item.stage_conditions,
+                    factory_conditions: item.factory_conditions
+                }
+
+                // make id and get content based on content_item type
+                if (content_item.constructor === Object) {
+                    new_generated_item.id = item.id * content_nested_id_multiplier + content_item.id
+                    new_generated_item.content = content_item.content
+                } else if (content_item.constructor === String) {
+                    // if item id is 54 and multiplier is 1000 then id will be 54000 + i (position in array)
+                    new_generated_item.id = item.id * content_nested_id_multiplier + i
+                    new_generated_item.content = content_item
+                }
+
+                generated_items.push(new_generated_item)
+            }
+
+            // this item does not have its own content
+            being_removed_item_ids.push(item.id)
+        }
+        index++
+    }
+
+    // remove items
+    catalog.items = catalog.items.filter(function (item) {
+        return being_removed_item_ids.indexOf(item.id) == -1
+    })
+
+    // add new items
+    catalog.items = catalog.items.concat(generated_items)
 }
 
 // STATIC FUNCTIONS MATH -------------------------------------------------------------
@@ -342,6 +394,8 @@ function get_new_strategy() {
     //     factories: ["naval", "naval","air","naval"],
     //     types: ["naval", "air"],
     //}
+
+    // GENERATE FACTORIES ORDER
     const earlygame_factories_order_lengths = [
         {
             value: 2,
@@ -368,6 +422,8 @@ function get_new_strategy() {
     var midgame_factories_order = get_factories_order(planet_conditions, 2,
         2, false
     )
+
+    // GENERATE GAME STAGES
 
     var modifiers = get_multiple_random_array_values_by_weight(
         _.filter(items_copy, function (x) {
@@ -450,8 +506,8 @@ function get_selected_planet_conditions() {
     if (stratModel.naval() == true) {
         conditions.push("naval")
     }
-    
-    if(stratModel.land() == true) {
+
+    if (stratModel.land() == true) {
         conditions.push("land")
     }
 
@@ -479,12 +535,12 @@ function get_factories_order(planet_conditions, tier, order_length, allow_same) 
         return x.tier == tier;
     })
 
-    var air_factory_check = 0;
+    var exclude_air_factories = 0;
 
     // remove all land factories if land is not selected
     if (!_.includes(planet_conditions, "land")) {
-        air_factory_check++;
-        console.log("land not selected")
+        exclude_air_factories++;
+        // console.log("land not selected")
         factories_copy = _.filter(factories_copy, function (x) {
             console.log(x.type + " keep " + (x.type != "bot" && x.type != "vehicle"))
             return x.type != "bot" && x.type != "vehicle";
@@ -492,13 +548,13 @@ function get_factories_order(planet_conditions, tier, order_length, allow_same) 
     }
 
     if (!_.includes(planet_conditions, "naval")) {
-        air_factory_check++;
+        exclude_air_factories++;
         factories_copy = _.filter(factories_copy, function (x) {
             return x.type != "naval";
         });
     }
 
-    if (air_factory_check == 2) {
+    if (exclude_air_factories == 2) {
         factories_copy = _.filter(factories_copy, function (x) {
             return x.type != "air";
         });
@@ -520,11 +576,11 @@ function get_factories_order(planet_conditions, tier, order_length, allow_same) 
     }
 
     for (var i = 0; i < order_length; i++) {
-        if(factories_copy.length == 0) {
-            console.log("no factories left")
-            debug(planet_conditions, "planet conditions")
-            debug(tier, "tier")
-            debug(factory_order, "factory order")
+        if (factories_copy.length == 0) {
+            // console.log("no factories left")
+            // debug(planet_conditions, "planet conditions")
+            // debug(tier, "tier")
+            // debug(factory_order, "factory order")
             break;
         }
 
@@ -665,9 +721,23 @@ function resolve_conflicting_items(items_arrays) {
     for (var i = 0; i < conflict_groups.length; i++) {
         var conflict_group = conflict_groups[i]
         var left = conflict_group.left
+
+        // ITERATE LEFT ARRAY
         for (var j = 0; j < left.length; j++) {
-            if (find_item(left[j]) != undefined) {
-                remove_items(conflict_group.right)
+            var id = left[j]
+
+            // group contains parent item id so we should look for its children instead
+            if (id < content_nested_id_multiplier) {
+                var children_items = find_children_items_LOCAL(id)
+                if (children_items.length > 0) {
+                    // items contains any of children items so we should remove conflicts from right array
+                    remove_items_LOCAL(conflict_groups.right)
+                    break
+                } else {
+                    continue
+                }
+            } else if (find_item_LOCAL(id) != undefined) {
+                remove_items_LOCAL(conflict_group.right)
                 // if we removed all conflict for a single item in group we can break
                 // to not iterate through the rest of the conflict group
                 break
@@ -683,7 +753,7 @@ function resolve_conflicting_items(items_arrays) {
     * @param {number} id - The ID of the item to find.
     * @return {Object} The item with the matching ID, or undefined if not found.
     */
-    function find_item(id) {
+    function find_item_LOCAL(id) {
         // It iterates through each array in the outer loop 
         // and each element in the inner loop.
         for (var i = 0; i < items_arrays.length; i++) {
@@ -697,7 +767,43 @@ function resolve_conflicting_items(items_arrays) {
         return undefined
     }
 
-    function remove_item(id) {
+    function find_children_items_LOCAL(parent_id) {
+        var children_items = []
+
+        for (var i = 0; i < items_arrays.length; i++) {
+            for (var j = 0; j < items_arrays[i].length; j++) {
+                var item = items_arrays[i][j]
+                var range = {
+                    start: parent_id * content_nested_id_multiplier,
+                    end: (parent_id + 1) * content_nested_id_multiplier
+                }
+                // example: if parent_id is 3, then we should iterate through items arrays from 3*1000 to (3+1)*1000, so 3000 to 4000
+                if (item.id >= range.start && item.id < range.end) {
+                    children_items.push(item)
+                }
+            }
+        }
+
+        return children_items
+    }
+
+    function remove_items_LOCAL(ids) {
+        for (var i = 0; i < ids.length; i++) {
+
+            var item_id = ids[i]
+
+            if (item_id < content_nested_id_multiplier) {
+                var children_item_ids = find_children_items_LOCAL(item_id)
+                if (children_item_ids.length > 0) {
+                    remove_items_LOCAL(children_item_ids)
+                }
+            } else {
+                remove_item_LOCAL(item_id)
+            }
+        }
+    }
+
+    function remove_item_LOCAL(id) {
         for (var i = 0; i < items_arrays.length; i++) {
             for (var j = 0; j < items_arrays[i].length; j++) {
                 if (items_arrays[i][j].id == id) {
@@ -707,18 +813,14 @@ function resolve_conflicting_items(items_arrays) {
         }
     }
 
-    function remove_items(ids) {
-        for (var i = 0; i < ids.length; i++) {
-            remove_item(ids[i])
-        }
-    }
+
 }
 
 function debug(object, message) {
-    console.log(JSON.stringify(object, null, 2) +" : " + ((message == null)?"":message))
+    console.log(JSON.stringify(object, null, 2) + " : " + ((message == null) ? "" : message))
 }
 
-function common_button_actions(){
+function common_button_actions() {
     document.activeElement.blur()
 }
 
