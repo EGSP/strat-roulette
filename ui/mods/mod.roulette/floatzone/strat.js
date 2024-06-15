@@ -14,6 +14,13 @@ const planet_conditions_EXAMPLE = ["any", "land", "naval", "orbital"]
 const placement_types_EXAMPLE = ["land", "naval", "orbital"]
 const modification_types_EXAMPLE = ["vanilla", "legion", "sw2", "s17"]
 
+handlers.commanders = function (payload){
+    commanders_PAYLOAD = payload
+
+    load_data();
+}
+var commanders_PAYLOAD = null; 
+
 //view model setup
 function stratModel() {
     var self = this;
@@ -59,6 +66,8 @@ model.processGenerateClick = function () {
     api.audio.playSoundFromFile("/pa/audio/roulette.wav");
 
     var new_strategy = get_new_strategy()
+
+    debug(new_strategy, "new strategy")
     stratModel.modifiers(new_strategy.modifiers)
     stratModel.earlygame_tasks(new_strategy.earlygame_tasks)
     stratModel.midgame_tasks(new_strategy.midgame_tasks)
@@ -226,7 +235,7 @@ var player_modifications = []
 function load_data() {
     // FIRST STEP: GET PLAYER INFO
     // LOOK FOR FACTIONS
-    var player_commanders = model.player().commanders;
+    var player_commanders = commanders_PAYLOAD;
     for (var i = 0; i < player_commanders.length; i++) {
         if (_.includes(legion_commanders_catalog, player_commanders[i])) {
             player_factions.push("legion")
@@ -341,7 +350,7 @@ function data_build_items(catalog) {
     catalog.items = catalog.items.concat(generated_items)
 
     // remove items that depend on modifications that player does not have
-    catalog.items = _filter(catalog.items, function (item) {
+    catalog.items = _.filter(catalog.items, function (item) {
         return item.modification == 'vanilla' || _.includes(player_modifications, item.modification) 
     })
 }
@@ -393,7 +402,7 @@ function get_random_array_value(array) {
  * var value = result.value
  * var index = result.index
  */
-function get_random_value_by_weight(array, weight_property = "weight") {
+function get_random_value_by_weight(array, weight_property) {
     if (array.length == 0) { return undefined }
 
     // multiply random value between 0..1 by sum of all weights
@@ -408,7 +417,7 @@ function get_random_value_by_weight(array, weight_property = "weight") {
     var weight_pointer_treshold = 0
     for (var i = 0; i < array.length; i++) {
         weight_pointer_treshold += (array[i][weight_property] || 1)
-        console.log("weight_pointer_treshold: " + weight_pointer_treshold)
+        // console.log("weight_pointer_treshold: " + weight_pointer_treshold)
         if (weight_pointer < weight_pointer_treshold) {
             return {
                 value: array[i],
@@ -433,7 +442,7 @@ function get_multiple_random_array_values(original_array, count) {
     return results
 }
 
-function get_multiple_random_array_values_by_weight(original_array, count, weight_property = "weight") {
+function get_multiple_random_array_values_by_weight(original_array, count, weight_property) {
     if (count > original_array.length) { count = original_array.length }
 
     var results = []
@@ -471,8 +480,8 @@ function get_new_strategy() {
         return item.id != -1;
     });
 
-    items_copy = _filter(items_copy, function (item) {
-        return item.faction == "any" || player_factions.includes(item.faction);
+    items_copy = _.filter(items_copy, function (item) {
+        return item.faction == "any" || _.includes(player_factions, item.faction);
     });
 
     var planet_conditions = get_selected_planet_conditions()
@@ -504,7 +513,7 @@ function get_new_strategy() {
         }
     ]
 
-    var earlygame_factories_order_length = get_random_value_by_weight(earlygame_factories_order_lengths).value.value
+    var earlygame_factories_order_length = get_random_value_by_weight(earlygame_factories_order_lengths,"weight").value.value
     var earlygame_factories_order = get_factories_order(planet_conditions, 1,
         earlygame_factories_order_length, true
     )
@@ -522,7 +531,7 @@ function get_new_strategy() {
                 earlygame_factories_order.types.concat(midgame_factories_order.types),
                 x);
         }),
-        modifiers_count)
+        modifiers_count, "weight")
     // remove selected items by filter
     items_copy = _.filter(items_copy, function (x) {
         return !_.includes(modifiers, x);
@@ -536,7 +545,7 @@ function get_new_strategy() {
                 earlygame_factories_order.types,
                 x);
         }),
-        earlygame_tasks_count)
+        earlygame_tasks_count, "weight")
     items_copy = _.filter(items_copy, function (x) {
         return !_.includes(earlygame_tasks, x);
     });
@@ -548,7 +557,7 @@ function get_new_strategy() {
                 midgame_factories_order.types,
                 x);
         }),
-        midgame_tasks_count)
+        midgame_tasks_count, "weight")
     items_copy = _.filter(items_copy, function (x) {
         return !_.includes(midgame_tasks, x);
     });
@@ -559,7 +568,7 @@ function get_new_strategy() {
             return does_item_match_conditions(planet_conditions, ["endgame"],
                 ["any"], x);
         }),
-        endgame_tasks_count)
+        endgame_tasks_count, "weight")
 
     var result = resolve_conflicting_items(
         [
@@ -618,6 +627,8 @@ function get_selected_planet_conditions() {
 function get_factories_order(planet_conditions, tier, order_length, allow_same) {
     var factories_copy = catalog.factories.slice()
 
+    debug(factories_copy, "factories_copy")
+
     // FILTER FACTORIES
     // remove all factories that are not the selected tier
     factories_copy = _.filter(factories_copy, function (x) {
@@ -649,7 +660,7 @@ function get_factories_order(planet_conditions, tier, order_length, allow_same) 
 
     if (!_.includes(planet_conditions, "naval")) {
         exclude_air_factories++;
-        factories_copy = _.filter(factories_copy, function (x) {
+        factories_copy = _.filter(factories_copy, function (factory_item) {
             if (factory_item.placement.length > 1 && _.includes(factory_item.placement, "naval")) {
                 factory_item.placement = _.filter(factory_item.placement, function (placement_item) {
                     return placement_item != "land";
@@ -663,7 +674,7 @@ function get_factories_order(planet_conditions, tier, order_length, allow_same) 
     }
 
     if (!_.includes(planet_conditions, "orbital")) {
-        factories_copy = _.filter(factories_copy, function (x) {
+        factories_copy = _.filter(factories_copy, function (factory_item) {
             if (factory_item.placement.length > 1 && _.includes(factory_item.placement, "orbital")) {
                 factory_item.placement = _.filter(factory_item.placement, function (placement_item) {
                     return placement_item != "land";
@@ -697,10 +708,9 @@ function get_factories_order(planet_conditions, tier, order_length, allow_same) 
         // first pick
         var factory = null;
         if (i == 0) {
-            factory = get_random_value_by_weight(factories_copy, "pick_first_weight")
-
+            factory = get_random_value_by_weight(factories_copy, "pick_first_weight").value
         } else {
-            factory = get_random_array_value(factories_copy)
+            factory = get_random_array_value(factories_copy).value
         }
 
         // push new factory in order
@@ -947,9 +957,6 @@ function debug(object, message) {
 function common_button_actions() {
     document.activeElement.blur()
 }
-
-
-load_data();
 
 //makes the floating frame for the view model
 createFloatingFrame("strat_frame", 'auto', 'auto', { "offset": "topRight", "left": -240 });

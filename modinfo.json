@@ -12,15 +12,20 @@
     "icon": "https://github.com/Ferret-Master/strat-roulette/blob/main/roulette.png?raw=true",
     "priority": 100,
     "category": [
-        "titans", "in-game","client","ui"
+        "titans",
+        "in-game",
+        "client",
+        "ui"
     ],
-    
     "scenes": {
-      "LiveGame_FloatZone": [
-          "coui://ui/mods/mod.roulette/floatzone/strat.js"
-      ]
-  },
-  "dependencies": [
-  "com.pa.raevn.rfloatframe"
-  ]
+        "LiveGame_FloatZone": [
+            "coui://ui/mods/mod.roulette/floatzone/strat.js"
+        ],
+        "live_game": [
+            "coui://ui/mods/mod.roulette/hook.js"
+        ]
+    },
+    "dependencies": [
+        "com.pa.raevn.rfloatframe"
+    ]
 }

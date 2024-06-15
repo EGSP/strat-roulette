@@ -94,11 +94,7 @@
     "conflict_groups": [
         {"left":[7],"right":[15]},
         {"left":[1],"right":[19]},
-
-
-        {"left":[2],"right":[55100]},
-        {"left":[2],"right":[55]},
-        {"left":[2],"right":[55001]}
+        {"left":[2],"right":[55100]}
     ],
 
     "items": [
