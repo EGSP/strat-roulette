@@ -1,5 +1,18 @@
 const data_folder_path = 'coui://ui/mods/mod.roulette/data/';
 
+const legion_commanders_catalog = [
+    "/pa/units/commanders/l_overwatch/l_overwatch.json",
+    "/pa/units/commanders/l_cyclops/l_cyclops.json",
+    "/pa/units/commanders/l_cataphract/l_cataphract.json",
+    "/pa/units/commanders/l_raptor/l_raptor.json",
+    "/pa/units/commanders/l_quad/l_quad.json",
+    "/pa/units/commanders/l_tank/l_tank.json"
+]
+
+const stage_conditions_EXAMPLE = ["modifier", "earlygame", "midgame", "endgame"]
+const planet_conditions_EXAMPLE = ["any", "land", "naval", "orbital"]
+const placement_types_EXAMPLE = ["land", "naval", "orbital"]
+const modification_types_EXAMPLE = ["vanilla", "legion", "sw2", "s17"]
 
 //view model setup
 function stratModel() {
@@ -203,8 +216,53 @@ var catalog = {
     items: []
 }
 
+// example: player_factions = ["legion","mla"]
+var player_factions = []
+
+// example: player_modifications = ["legion","mla","sw2","s17"]
+var player_modifications = []
+
 // STATIC FUNCTIONS -------------------------------------------------------------
 function load_data() {
+    // FIRST STEP: GET PLAYER INFO
+    // LOOK FOR FACTIONS
+    var player_commanders = model.player().commanders;
+    for (var i = 0; i < player_commanders.length; i++) {
+        if (_.includes(legion_commanders_catalog, player_commanders[i])) {
+            player_factions.push("legion")
+        } else {
+            player_factions.push("mla")
+        }
+    }
+
+    // remove faction duplicates
+    player_factions = _.uniq(player_factions)
+    console.log("player_factions:/")
+    console.log(player_factions)
+
+    // LOOK FOR MODIFICATIONS
+    api.mods.getMounted("server").then(function (mods) {
+        player_modifications.push("vanilla")
+
+        var identifiers = _.pluck(mods, "identifier")
+
+        if (_.includes(identifiers, "com.pa.legion-expansion-server") ||
+            _.includes(identifiers, "com.pa.legion-expansion-server.dev")) {
+            player_modifications.push("legion")
+        }
+
+        if (_.includes(identifiers, "com.pa.daedelus.experimentals") ||
+            _.includes(identifiers, "com.pa.daedelus.experimentals.dev")) {
+            player_modifications.push("s17")
+        }
+
+        if (_.includes(identifiers, "pa.mla.unit.addon") ||
+            _.includes(identifiers, "pa.mla.unit.addon.dev")) {
+            player_modifications.push("sw2")
+        }
+    })
+
+    // SECOND STEP: LOAD AND BUILD CATALOG
     // structure schema
     // {
     //     id: number
@@ -215,6 +273,7 @@ function load_data() {
     // loading catalog
     $.getJSON(data_folder_path.concat('catalog.json')).then(function (data) {
         data_build_items(data)
+        data_build_factories(data)
 
         catalog = data
         console.log('catalog:/')
@@ -231,6 +290,14 @@ function data_build_items(catalog) {
     while (index < catalog.items.length) {
         var item = catalog.items[index]
 
+        if (item.faction == undefined) {
+            item.faction = "any"
+        }
+
+        if (item.modification == undefined) {
+            item.modification = "vanilla"
+        }
+
         // GENERATING NEW ITEMS FROM ORIGINAL ITEM
         if (item.content.constructor === Array) {
             var content_as_array = item.content
@@ -241,7 +308,9 @@ function data_build_items(catalog) {
                 var new_generated_item = {
                     planet_conditions: item.planet_conditions,
                     stage_conditions: item.stage_conditions,
-                    factory_conditions: item.factory_conditions
+                    factory_conditions: item.factory_conditions,
+                    faction: item.faction,
+                    modification: item.modification
                 }
 
                 // make id and get content based on content_item type
@@ -270,7 +339,23 @@ function data_build_items(catalog) {
 
     // add new items
     catalog.items = catalog.items.concat(generated_items)
+
+    // remove items that depend on modifications that player does not have
+    catalog.items = _filter(catalog.items, function (item) {
+        return item.modification == 'vanilla' || _.includes(player_modifications, item.modification) 
+    })
 }
+
+function data_build_factories(catalog) {
+    for (var i = 0; i < catalog.factories.length; i++) {
+        var factory = catalog.factories[i]
+        if (factory.faction == undefined) {
+            factory.faction = "any"
+        }
+    }
+}
+
+
 
 // STATIC FUNCTIONS MATH -------------------------------------------------------------
 function get_random_value_inclusive(min, max) {
@@ -308,13 +393,13 @@ function get_random_array_value(array) {
  * var value = result.value
  * var index = result.index
  */
-function get_random_value_by_weight(array) {
+function get_random_value_by_weight(array, weight_property = "weight") {
     if (array.length == 0) { return undefined }
 
     // multiply random value between 0..1 by sum of all weights
     var weight_pointer = Math.random() * _.reduce(array, function (acc, obj) {
-        if (obj.weight == undefined) { return acc + 1 }
-        return acc + obj.weight
+        if (obj[weight_property] == undefined) { return acc + 1 }
+        return acc + obj[weight_property]
     }, 0);
     // var weight_pointer = Math.random();
 
@@ -322,7 +407,7 @@ function get_random_value_by_weight(array) {
 
     var weight_pointer_treshold = 0
     for (var i = 0; i < array.length; i++) {
-        weight_pointer_treshold += (array[i].weight || 1)
+        weight_pointer_treshold += (array[i][weight_property] || 1)
         console.log("weight_pointer_treshold: " + weight_pointer_treshold)
         if (weight_pointer < weight_pointer_treshold) {
             return {
@@ -348,13 +433,13 @@ function get_multiple_random_array_values(original_array, count) {
     return results
 }
 
-function get_multiple_random_array_values_by_weight(original_array, count) {
+function get_multiple_random_array_values_by_weight(original_array, count, weight_property = "weight") {
     if (count > original_array.length) { count = original_array.length }
 
     var results = []
     var copied_array = original_array.slice()
     for (var i = 0; i < count; i++) {
-        var result = get_random_value_by_weight(copied_array)
+        var result = get_random_value_by_weight(copied_array, weight_property)
         results.push(result.value)
         // remove selected value
         copied_array.splice(result.index, 1)
@@ -382,8 +467,12 @@ function get_new_strategy() {
 
     var items_copy = catalog.items.slice()
     // remove unused items with id = -1
-    items_copy = _.filter(items_copy, function (x) {
-        return x.id != -1;
+    items_copy = _.filter(items_copy, function (item) {
+        return item.id != -1;
+    });
+
+    items_copy = _filter(items_copy, function (item) {
+        return item.faction == "any" || player_factions.includes(item.faction);
     });
 
     var planet_conditions = get_selected_planet_conditions()
@@ -535,38 +624,59 @@ function get_factories_order(planet_conditions, tier, order_length, allow_same) 
         return x.tier == tier;
     })
 
+    factories_copy = _.filter(factories_copy, function (x) {
+        return _.includes(player_factions, x.faction) || x.faction == "any";
+    })
+
     var exclude_air_factories = 0;
 
     // remove all land factories if land is not selected
     if (!_.includes(planet_conditions, "land")) {
         exclude_air_factories++;
         // console.log("land not selected")
-        factories_copy = _.filter(factories_copy, function (x) {
-            console.log(x.type + " keep " + (x.type != "bot" && x.type != "vehicle"))
-            return x.type != "bot" && x.type != "vehicle";
+        factories_copy = _.filter(factories_copy, function (factory_item) {
+            if (factory_item.placement.length > 1 && _.includes(factory_item.placement, "land")) {
+                factory_item.placement = _.filter(factory_item.placement, function (placement_item) {
+                    return placement_item != "land";
+                })
+                // this factory will be excluded in the next steps
+                return true;
+            } else {
+                return factory_item.placement[0] != "land";
+            }
         });
     }
 
     if (!_.includes(planet_conditions, "naval")) {
         exclude_air_factories++;
         factories_copy = _.filter(factories_copy, function (x) {
-            return x.type != "naval";
-        });
-    }
-
-    if (exclude_air_factories == 2) {
-        factories_copy = _.filter(factories_copy, function (x) {
-            return x.type != "air";
+            if (factory_item.placement.length > 1 && _.includes(factory_item.placement, "naval")) {
+                factory_item.placement = _.filter(factory_item.placement, function (placement_item) {
+                    return placement_item != "land";
+                })
+                // this factory will be excluded in the next steps
+                return true;
+            } else {
+                return factory_item.placement[0] != "naval";
+            }
         });
     }
 
     if (!_.includes(planet_conditions, "orbital")) {
         factories_copy = _.filter(factories_copy, function (x) {
-            return x.type != "orbital";
+            if (factory_item.placement.length > 1 && _.includes(factory_item.placement, "orbital")) {
+                factory_item.placement = _.filter(factory_item.placement, function (placement_item) {
+                    return placement_item != "land";
+                })
+                // this factory will be excluded in the next steps
+                return true;
+            } else {
+                return factory_item.placement[0] != "orbital";
+            }
         });
     }
 
-    debug(factories_copy)
+    // debug(factories_copy)
 
     // GENERATE ORDER
     var factory_order = {
@@ -584,13 +694,19 @@ function get_factories_order(planet_conditions, tier, order_length, allow_same) 
             break;
         }
 
-        var random_index = get_random_value_inclusive(0, factories_copy.length - 1)
-        var factory = factories_copy[random_index]
+        // first pick
+        var factory = null;
+        if (i == 0) {
+            factory = get_random_value_by_weight(factories_copy, "pick_first_weight")
+
+        } else {
+            factory = get_random_array_value(factories_copy)
+        }
 
         // push new factory in order
         factory_order.factories.push(factory)
 
-        debug(factory, "factory")
+        // debug(factory, "factory")
 
         // push new type in order if it doesn't exist
         if (!_.includes(factory_order.types, factory.type)) {
@@ -618,6 +734,10 @@ function get_factories_order(planet_conditions, tier, order_length, allow_same) 
  * @return {boolean} Returns true if the item matches all the conditions, otherwise false.
  */
 function does_item_match_conditions(planet_conditions, stage_conditions, factory_conditions, item) {
+    if (does_item_match_faction_condition(item) == false) {
+        // TODO: this check can be moved to data loading stage
+        return false
+    }
     if (does_item_match_any_planet_conditions(planet_conditions, item) == false) {
         return false
     }
@@ -698,6 +818,10 @@ function does_item_match_any_factory_conditions(factory_conditions, item) {
         }
     }
     return false
+}
+
+function does_item_match_faction_condition(item) {
+    return item.faction == "any" || _.includes(player_factions, item.faction)
 }
 
 /**
