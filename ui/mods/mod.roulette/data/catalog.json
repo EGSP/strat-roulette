@@ -630,12 +630,12 @@
             "faction":"mla"
         },
         {
-            "id": -1,
-            "content":"no kestrels",
-            "planet_conditions":["land","naval"],
+            "id": 40,
+            "content":"control land units only from factories",
+            "planet_conditions":["land"],
             "stage_conditions":["modifier"],
-            "factory_conditions":["air"],
-            "faction":"mla"
+            "factory_conditions":["bot","vehicle"],
+            "faction":"any"
         },
         {
             "id": 41,

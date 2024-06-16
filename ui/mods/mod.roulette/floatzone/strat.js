@@ -212,6 +212,10 @@ model.toggleOrbital = function () {
     }
 
 }
+
+model.openDiscord = function () {
+    engine.call('web.launchPage', 'https://discord.gg/pa');
+}
 // BUTTONS END -----------------------------------------------------------------
 
 // loaded data
