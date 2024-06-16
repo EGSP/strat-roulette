@@ -5,14 +5,15 @@
             "type":"bot",
             "tier": 1,
             "icon":"coui://pa/units/land/bot_factory/bot_factory_icon_buildbar.png",
-            "placement":"land"
+            "placement":["land"],
+            "faction":"mla"
         },
         {
             "id":1,
             "type":"vehicle",
             "tier": 1,
             "icon":"coui://pa/units/land/vehicle_factory/vehicle_factory_icon_buildbar.png",
-            "placement":"land",
+            "placement":["land"],
             "faction":"mla"
         },
         {
@@ -21,6 +22,7 @@
             "tier": 1,
             "icon":"coui://pa/units/air/air_factory/air_factory_icon_buildbar.png",
             "placement":["land","naval"],
+            "faction":"mla",
             "pick_first_weight":0.5
         },
         {
@@ -28,49 +30,56 @@
             "type":"naval",
             "tier": 1,
             "icon":"coui://pa/units/sea/naval_factory/naval_factory_icon_buildbar.png",
-            "placement":["naval"]
+            "placement":["naval"],
+            "faction":"mla"
         },
         {
             "id":4,
             "type":"orbital",
             "tier": 1,
             "icon":"coui://pa/units/orbital/orbital_launcher/orbital_launcher_icon_buildbar.png",
-            "placement":["land","naval"]
+            "placement":["orbital"],
+            "faction":"mla"
         },
         {
             "id":5,
             "type":"bot",
             "tier": 2,
             "icon":"coui://pa/units/land/bot_factory_adv/bot_factory_adv_icon_buildbar.png",
-            "placement":"land"
+            "placement":["land"],
+            "faction":"mla"
         },
         {
             "id":6,
             "type":"vehicle",
             "tier": 2,
             "icon":"coui://pa/units/land/vehicle_factory_adv/vehicle_factory_adv_icon_buildbar.png",
-            "placement":"land"
+            "placement":["land"],
+            "faction":"mla"
         },
         {
             "id":7,
             "type":"air",
             "tier": 2,
             "icon":"coui://pa/units/air/air_factory_adv/air_factory_adv_icon_buildbar.png",
-            "placement":["land","naval"]
+            "placement":["land","naval"],
+            "faction":"mla"
         },
         {
             "id":8,
             "type":"naval",
             "tier": 2,
             "icon":"coui://pa/units/sea/naval_factory_adv/naval_factory_adv_icon_buildbar.png",
-            "placement":["naval"]
+            "placement":["naval"],
+            "faction":"mla"
         },
         {
             "id":9,
             "type":"orbital",
             "tier": 2,
             "icon":"coui://pa/units/orbital/orbital_factory/orbital_factory_icon_buildbar.png",
-            "placement":["land","naval"]
+            "placement":["orbital"],
+            "faction":"mla"
         },
         {
             "id":10,
@@ -78,12 +87,116 @@
             "tier": 2,
             "icon":"coui://pa/units/paeiou/experimental_gantry/experimental_gantry_icon_buildbar.png",
 
-            "faction":"any",
+            "faction":"mla",
             "modification":"s17",
 
             "placement":["land"],
-            "pick_first_weight":0.2
+            "weight":0.5,
+            "pick_first_weight":0.05
+        },
+        {
+            "id":11,
+            "type":"bot",
+            "tier": 1,
+            "icon": "coui://pa/units/land/l_bot_factory/l_bot_factory_icon_buildbar.png",
+            "placement":["land"],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id":12,
+            "type":"vehicle",
+            "tier": 1,
+            "icon": "coui://pa/units/land/l_vehicle_factory/l_vehicle_factory_icon_buildbar.png",
+            "placement":["land"],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id":13,
+            "type":"air",
+            "tier": 1,
+            "icon": "coui://pa/units/air/l_air_factory/l_air_factory_icon_buildbar.png",
+            "placement":["land","naval"],
+            "pick_first_weight":0.5,
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id":14,
+            "type":"naval",
+            "tier": 1,
+            "icon": "coui://pa/units/sea/l_naval_factory/l_naval_factory_icon_buildbar.png",
+            "placement":["naval"],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id":15,
+            "type":"orbital",
+            "tier": 1,
+            "icon": "coui://pa/units/orbital/l_orbital_launcher/l_orbital_launcher_icon_buildbar.png",
+            "placement":["orbital"],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id":16,
+            "type":"bot",
+            "tier": 2,
+            "icon": "coui://pa/units/land/l_bot_factory_adv/l_bot_factory_adv_icon_buildbar.png",
+            "placement":["land"],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id":17,
+            "type":"vehicle",
+            "tier": 2,
+            "icon": "coui://pa/units/land/l_vehicle_factory_adv/l_vehicle_factory_adv_icon_buildbar.png",
+            "placement":["land"],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id":18,
+            "type":"air",
+            "tier": 2,
+            "icon": "coui://pa/units/air/l_air_factory_adv/l_air_factory_adv_icon_buildbar.png",
+            "placement":["land","naval"],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id":19,
+            "type":"naval",
+            "tier": 2,
+            "icon": "coui://pa/units/sea/l_naval_factory_adv/l_naval_factory_adv_icon_buildbar.png",
+            "placement":["naval"],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id":20,
+            "type":"orbital",
+            "tier": 2,
+            "icon": "coui://pa/units/orbital/l_orbital_factory/l_orbital_factory_icon_buildbar.png",
+            "placement":["orbital"],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id":21,
+            "type":"gantry",
+            "tier": 2,
+            "icon": "coui://pa/units/paeiou/l_experimental_gantry/l_experimental_gantry_icon_buildbar.png",
+            "placement":["land"],
+            "faction":"legion",
+            "modification":"s17",
+            "weight":0.5,
+            "pick_first_weight":0.05
         }
+        
     ],
     
     "max_modifiers_count":2,
@@ -92,434 +205,593 @@
     "max_endgame_count":2,
 
     "conflict_groups": [
-        {"left":[7],"right":[15]},
-        {"left":[1],"right":[19]},
-        {"left":[2],"right":[55100]}
+        {"left":[1003],"right":[1009, 33, 55]},
+        {"left":[1004],"right":[43]},
+        {"left":[1011], "right": [20,53]},
+        {"row":[2000,71,8002,9004, 61001, 62001]},
+        {"row":[69,68,70,71]},
+        {"row":[1007,19]},
+        {"left":[21,22], "right": [1006, 15]},
+        {"row":[54001, 54000, 54002]},
+
+        {"row":[6004, 6002]},
+        {"row":[59005,59004]}
     ],
 
     "items": [
         {
-            "id":0,
-            "content": "no radar",
+            "id":-1,
+            "content": "DONT USE THIS ID == 0, cause id_multiplier * 0 = 0, so it will shadow all other items",
             "planet_conditions":["any"],
             "stage_conditions":["modifier"],
             "factory_conditions":["any"],
-
             "faction":"any"
         },
         {
             "id":1,
-            "content": "commander not allowed to move",
+            "content": [
+                {"id":0, "content":"no radar"},
+                {"id":1, "content":"no scouting"},
+                {"id":2, "content":"no bombers"},
+                {"id":3, "content":"no defense structures except anti-nuke"},
+                {"id":4, "content":"no reclaim"},
+                {"id":5, "content":"no fabricator snipes"},
+                {"id":6, "content":"no proxy factories"},
+                {"id":7, "content":"commander not allowed to change position"},
+                {"id":8, "content":"no nukes"},
+                {"id":9, "content":"no anti-air structures"},
+                {"id":10, "content":"no t2 metal extractors"},
+                {"id":11, "content":"no factory production assist"},
+                {"id":12, "content":"no t2 land energy generators"},
+                {"id":13, "content":"commander not allowed to build energy"},
+                {"id":14, "content":"dont use shift key | order queue"},
+                {"id":15, "content":"dont use hotkeys"}
+            ],
             "planet_conditions":["any"],
             "stage_conditions":["modifier"],
-            "factory_conditions":["any"]
+            "factory_conditions":["any"],
+            "faction":"any"
         },
         {
             "id":2,
-            "content": "bot heavy without dox",
+            "content": [
+                {"id":0, "content":"spam dox"},
+                "spam boombots",
+                "spam grenadier",
+                "spam sparks"
+            ],
             "planet_conditions":["land"],
-            "stage_conditions":["modifier"],
-            "factory_conditions":["bot"]
+            "stage_conditions":["earlygame"],
+            "factory_conditions":["bot"],
+            "faction":"mla"
         },
         {
             "id":3,
-            "content": "no bombers",
-            "planet_conditions":["land","naval"],
-            "stage_conditions":["modifier"],
-            "factory_conditions":["air"]
+            "content": [
+                "spam slammers",
+                "spam bluehawks",
+                "spam giles",
+                "spam locusts",
+                "spam colonels"
+            ],
+            "planet_conditions":["land"],
+            "stage_conditions":["midgame"],
+            "factory_conditions":["bot"],
+            "faction":"mla"
         },
         {
             "id":4,
-            "content": "heavy defenses",
-            "planet_conditions":["any"],
-            "stage_conditions":["modifier"],
-            "factory_conditions":["any"]
+            "content": [
+                "spam atlas titans",
+                "build atals titan"
+            ],
+            "planet_conditions":["land"],
+            "stage_conditions":["endgame"],
+            "factory_conditions":["bot"],
+            "faction":"mla"
         },
         {
             "id":5,
-            "content": "aggressive play",
-            "planet_conditions":["any"],
-            "stage_conditions":["modifier"],
-            "factory_conditions":["any"]
+            "content": [
+                "spam strykers",
+                "spam ants",
+                "spam drifters",
+                "spam inferno"
+            ],
+            "planet_conditions":["land"],
+            "stage_conditions":["earlygame"],
+            "factory_conditions":["vehicle"],
+            "faction":"mla"
         },
         {
             "id":6,
-            "content": "defensive play",
-            "planet_conditions":["any"],
-            "stage_conditions":["modifier"],
-            "factory_conditions":["any"]
+            "content": [
+                { "id": 0, "content": "spam levelers" },
+                { "id": 1, "content": "spam shellers" },
+                { "id": 2, "content": "spam vaguards" },
+                { "id": 3, "content": "spam manhattans" },
+                { "id": 4, "content": "dont build vanguards" }
+            ],
+            "planet_conditions":["land"],
+            "stage_conditions":["midgame"],
+            "factory_conditions":["vehicle"],
+            "faction":"mla"
         },
         {
             "id":7,
-            "content": "all t2 should be proxies",
-            "planet_conditions":["land","naval"],
-            "stage_conditions":["modifier"],
-            "factory_conditions":["any"]
+            "content": [
+                "spam ares titans",
+                "build ares titan"
+            ],
+            "planet_conditions":["land"],
+            "stage_conditions":["endgame"],
+            "factory_conditions":["vehicle"],
+            "faction":"mla"
         },
         {
             "id":8,
-            "content": "no defense structures",
-            "planet_conditions":["any"],
-            "stage_conditions":["modifier"],
-            "factory_conditions":["any"]
+            "content": [
+                { "id": 0, "content": "spam icarus" },
+                { "id": 1, "content": "spam hummingbirds" },
+                { "id": 2, "content": "spam bumblebees" }
+            ],
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["earlygame"],
+            "factory_conditions":["air"],
+            "faction":"mla"
         },
         {
             "id":9,
-            "content": "no reclaim",
-            "planet_conditions":["any"],
-            "stage_conditions":["modifier"],
-            "factory_conditions":["any"]
+            "content": [
+                { "id": 0, "content": "spam kestrels" },
+                { "id": 1, "content": "spam phoenixes" },
+                { "id": 2, "content": "spam horsefly" },
+                { "id": 3, "content": "spam hornets" },
+                { "id": 4, "content": "spam wyrms" }
+            ],
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["midgame"],
+            "factory_conditions":["air"],
+            "faction":"mla"
         },
         {
             "id":10,
-            "content": "fab heavy",
-            "planet_conditions":["any"],
-            "stage_conditions":["modifier"],
-            "factory_conditions":["any"]
+            "content": [
+                "spam zeus titans",
+                "build zeus titan"
+            ],
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["endgame"],
+            "factory_conditions":["air"],
+            "faction":"mla"
         },
         {
             "id":11,
-            "content": "no scouting",
-            "planet_conditions":["any"],
-            "stage_conditions":["modifier"],
-            "factory_conditions":["any"]
+            "content": [
+                "spam piranhas",
+                "spam narwhals",
+                "spam barracudas",
+                "spam orcas"
+            ],
+            "planet_conditions":["naval"],
+            "stage_conditions":["earlygame"],
+            "factory_conditions":["naval"],
+            "faction":"mla"
         },
         {
             "id":12,
-            "content": "expand towards enemy base",
-            "planet_conditions":["land","naval"],
-            "stage_conditions":["modifier"],
-            "factory_conditions":["any"]
+            "content": [
+                "spam kaijus",
+                "spam krakens",
+                "spam stingrays",
+                "spam leviathan",
+                "spam typhoons"
+            ],
+            "planet_conditions":["naval"],
+            "stage_conditions":["midgame"],
+            "factory_conditions":["naval"],
+            "faction":"mla"
         },
         {
             "id":13,
-            "content": "line base",
-            "planet_conditions":["land","naval"],
-            "stage_conditions":["modifier"],
-            "factory_conditions":["any"]
+            "content": [
+                "spam poseidon titans",
+                "build poseidon titan"
+            ],
+            "planet_conditions":["naval"],
+            "stage_conditions":["endgame"],
+            "factory_conditions":["naval"],
+            "faction":"mla",
+            "modification":"s17"
         },
         {
-            "id":14,
-            "content": "no fab snipes",
-            "planet_conditions":["any"],
-            "stage_conditions":["modifier"],
-            "factory_conditions":["any"]
+            "id": 14,
+            "content": "spam yellowjackets",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["midgame"],
+            "factory_conditions":["air"],
+            "faction":"mla",
+            "modification":"s17"
         },
         {
             "id":15,
-            "content": "no proxy factories",
+            "content": [
+                {"id": 0, "content": "build line base"},
+                {"id": 1, "content": "build cross base"}
+            ],
             "planet_conditions":["land","naval"],
             "stage_conditions":["modifier"],
-            "factory_conditions":["any"]
+            "factory_conditions":["any"],
+            "faction":"any"
         },
         {
             "id": 16,
             "content":"fab drops",
             "planet_conditions":["land"],
             "stage_conditions":["earlygame"],
-            "factory_conditions":["bot","vehicle"]
+            "factory_conditions":["bot","vehicle"],
+            "faction":"any"
         },
         {
             "id": 17,
             "content":"inferno drop",
             "planet_conditions":["land"],
             "stage_conditions":["earlygame"],
-            "factory_conditions":["vehicle"]
+            "factory_conditions":["vehicle"],
+            "faction":"mla"
         },
         {
             "id": 18,
             "content":"spark drop",
             "planet_conditions":["land"],
             "stage_conditions":["earlygame"],
-            "factory_conditions":["bot"]
+            "factory_conditions":["bot"],
+            "faction":"mla"
         },
         {
             "id": 19,
             "content":"commander rush",
             "planet_conditions":["any"],
-            "stage_conditions":["earlygame"],
+            "stage_conditions":["earlygame","midgame"],
             "factory_conditions":["any"],
-            "weight":0.2
+            "weight":0.2,
+            "faction":"any"
         },
         {
             "id": 20,
-            "content":"boost first factory",
+            "content":"boost first factory with 50 metal",
             "planet_conditions":["any"],
             "stage_conditions":["earlygame"],
-            "factory_conditions":["any"]
+            "factory_conditions":["any"],
+            "faction":"any"
         },
         {
             "id": 21,
-            "content":"build first t2 as proxy",
+            "content":[
+                "build first t2 as proxy",
+                "build t1 factories as proxy except first"],
             "planet_conditions":["any"],
             "stage_conditions":["earlygame"],
-            "factory_conditions":["any"]
+            "factory_conditions":["any"],
+            "faction":"any"
         },
         {
             "id": 22,
-            "content":"piranha spam",
-            "planet_conditions":["naval"],
-            "stage_conditions":["earlygame"],
-            "factory_conditions":["naval"]
+            "content":[
+                "build t2 factories as proxy"],
+            "planet_conditions":["any"],
+            "stage_conditions":["midgame"],
+            "factory_conditions":["any"],
+            "faction":"any"
         },
         {
             "id": 23,
-            "content":"make an early barnacle",
+            "content":"attempt snipe with mines",
             "planet_conditions":["naval"],
-            "stage_conditions":["earlygame"],
-            "factory_conditions":["naval"]
+            "stage_conditions":["earlygame","midgame","endgame"],
+            "factory_conditions":["naval"],
+            "faction":"mla"
         },
         {
             "id": 24,
             "content":"aggressive naval proxy",
             "planet_conditions":["naval"],
             "stage_conditions":["modifier"],
-            "factory_conditions":["naval"]
+            "factory_conditions":["naval"],
+            "faction":"any"
         },
         {
             "id": 25,
-            "content":"drifter heavy",
+            "content":"build metal generators instead extractors",
             "planet_conditions":["naval","land"],
-            "stage_conditions":["modifier","earlygame"],
-            "factory_conditions":["vehicle"]
+            "stage_conditions":["modifier"],
+            "factory_conditions":["any"],
+            "faction":"any",
+            "modification":"sw2"
         },
         {
             "id": 26,
             "content":"early invasion",
             "planet_conditions":["orbital"],
             "stage_conditions":["earlygame"],
-            "factory_conditions":["any"]
+            "factory_conditions":["any"],
+            "faction":"any"
         },
         {
             "id": 27,
             "content":"teleporter rush",
             "planet_conditions":["land","orbital"],
-            "stage_conditions":["earlygame"],
-            "factory_conditions":["any"]
+            "stage_conditions":["midgame"],
+            "factory_conditions":["any"],
+            "faction":"any",
+
+            "weight":0.2
         },
         {
             "id": 28,
             "content":"reclaim heavy",
             "planet_conditions":["any"],
             "stage_conditions":["modifier"],
-            "factory_conditions":["any"]
+            "factory_conditions":["any"],
+            "faction":"any"
         },
         {
             "id": 29,
             "content":"spam torpedo launchers",
             "planet_conditions":["naval"],
             "stage_conditions":["earlygame","midgame"],
-            "factory_conditions":["any"]
+            "factory_conditions":["any"],
+            "faction":"any"
         },
         {
             "id": 30,
             "content":"spam kaiju",
             "planet_conditions":["naval"],
             "stage_conditions":["midgame","endgame"],
-            "factory_conditions":["naval"]
+            "factory_conditions":["naval"],
+            "faction":"mla"
         },
         {
             "id": 31,
             "content":"build manhattan first",
             "planet_conditions":["land"],
             "stage_conditions":["midgame"],
-            "factory_conditions":["vehicle"]
+            "factory_conditions":["vehicle"],
+            "faction":"mla"
         },
         {
             "id": 32,
             "content":"t2 bot drop",
             "planet_conditions":["land"],
             "stage_conditions":["midgame","endgame"],
-            "factory_conditions":["bot"]
+            "factory_conditions":["bot"],
+            "faction":"any"
         },
         {
             "id": 33,
-            "content":"spam colonels",
-            "planet_conditions":["land"],
-            "stage_conditions":["midgame","endgame"],
-            "factory_conditions":["bot"]
+            "content":"harass using orbital defence",
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["earlygame","midgame","endgame"],
+            "factory_conditions":["any"],
+            "faction":"any"
         },
         {
             "id": 34,
-            "content":"spam bluehawk",
+            "content":[
+                "spam demi-titans",
+                "build demi-titan"
+            ],
             "planet_conditions":["land"],
-            "stage_conditions":["midgame","endgame"],
-            "factory_conditions":["bot"]
+            "stage_conditions":["endgame"],
+            "factory_conditions":["bot"],
+            "faction":"any",
+            "modification":"sw2"
         },
         {
             "id": 35,
-            "content":"spam boombots",
-            "planet_conditions":["land"],
+            "content":"harass metal extractors with almaz",
+            "planet_conditions":["land","naval"],
             "stage_conditions":["earlygame","midgame","endgame"],
-            "factory_conditions":["bot"]
+            "factory_conditions":["any"],
+            "faction":"legion",
+            "modification":"sw2"
         },
         {
             "id": 36,
-            "content":"build hornet early",
+            "content":"harass metal extractors with andreas",
             "planet_conditions":["land","naval"],
-            "stage_conditions":["midgame","endgame"],
-            "factory_conditions":["air"]
+            "stage_conditions":["earlygame","midgame","endgame"],
+            "factory_conditions":["any"],
+            "faction":"mla",
+            "modification":"sw2"
         },
         {
             "id": 37,
-            "content":"make wyrm snipe",
+            "content":"attempt wyrm snipe",
             "planet_conditions":["land","naval"],
             "stage_conditions":["midgame","endgame"],
-            "factory_conditions":["air"]
+            "factory_conditions":["air"],
+            "faction":"mla"
         },
         {
             "id": 38,
             "content":"build angel first",
             "planet_conditions":["land","naval"],
-            "stage_conditions":["midgame","endgame"],
-            "factory_conditions":["air"]
+            "stage_conditions":["midgame"],
+            "factory_conditions":["air"],
+            "faction":"mla"
         },
         {
             "id": 39,
-            "content":"no t2 fighters",
+            "content":"make all angels patrol",
             "planet_conditions":["land","naval"],
-            "stage_conditions":["modifier"],
-            "factory_conditions":["air"]
+            "stage_conditions":["midgame","endgame"],
+            "factory_conditions":["air"],
+            "faction":"mla"
         },
         {
-            "id": 40,
+            "id": -1,
             "content":"no kestrels",
             "planet_conditions":["land","naval"],
             "stage_conditions":["modifier"],
-            "factory_conditions":["air"]
+            "factory_conditions":["air"],
+            "faction":"mla"
         },
         {
             "id": 41,
             "content":"build t2 fabricator first",
             "planet_conditions":["land","naval"],
             "stage_conditions":["midgame"],
-            "factory_conditions":["any"]
+            "factory_conditions":["any"],
+            "faction":"any"
         },
         {
             "id": 42,
             "content":"build nuke early",
             "planet_conditions":["land","naval"],
             "stage_conditions":["endgame"],
-            "factory_conditions":["any"]
+            "factory_conditions":["any"],
+            "faction":"any"
         },
         {
             "id": 43,
-            "content":"build a titan early",
+            "content":"reclaim rush",
             "planet_conditions":["land","naval"],
-            "stage_conditions":["endgame"],
-            "factory_conditions":["any"]
+            "stage_conditions":["earlygame","midgame","endgame"],
+            "factory_conditions":["any"],
+            "faction":"any"
         },
         {
             "id": 44,
             "content":"spam omegas",
             "planet_conditions":["land","naval"],
             "stage_conditions":["endgame"],
-            "factory_conditions":["orbital"]
+            "factory_conditions":["orbital"],
+            "faction":"mla"
         },
         {
             "id": 45,
             "content":"build unit cannon",
             "planet_conditions":["land","naval"],
             "stage_conditions":["endgame"],
-            "factory_conditions":["any"]
+            "factory_conditions":["any"],
+            "faction":"mla"
         },
         {
             "id": 46,
             "content":"build holkins",
             "planet_conditions":["land","naval"],
             "stage_conditions":["endgame"],
-            "factory_conditions":["any"]
+            "factory_conditions":["any"],
+            "faction":"mla"
         },
         {
             "id": 47,
-            "content":"make sxx snipe",
+            "content":[
+                "make sxx snipe",
+                "make omega snipe"
+            ],
             "planet_conditions":["orbital"],
-            "stage_conditions":["endgame"],
-            "factory_conditions":["orbital"]
+            "stage_conditions":["midgame","endgame"],
+            "factory_conditions":["orbital"],
+            "faction":"mla"
         },
         {
             "id": 48,
-            "content":"make omega snipe",
+            "content":[
+                "make black knight snipe",
+                "make imperator snipe"
+            ],
             "planet_conditions":["orbital"],
             "stage_conditions":["endgame"],
-            "factory_conditions":["orbital"]
+            "factory_conditions":["orbital"],
+            "faction":"legion"
         },
         {
             "id": 49,
-            "content":"spam shellers",
-            "planet_conditions":["land"],
-            "stage_conditions":["endgame"],
-            "factory_conditions":["vehicle"]
+            "content":[
+                "kill commander with sxx",
+                "kill commander with omegas"
+            ],
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["midgame","endgame"],
+            "factory_conditions":["any"],
+            "faction":"mla"
         },
         {
             "id": 50,
-            "content":"spam gile",
-            "planet_conditions":["land"],
-            "stage_conditions":["endgame"],
-            "factory_conditions":["bot"]
+            "content":[
+                "kill commander with black knights",
+                "kill commander with imperators"
+            ],
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["midgame","endgame"],
+            "factory_conditions":["any"],
+            "faction":"legion"
         },
         {
             "id": 51,
             "content":"slammer drop",
             "planet_conditions":["land"],
             "stage_conditions":["midgame","endgame"],
-            "factory_conditions":["bot"]
+            "factory_conditions":["bot"],
+            "faction":"mla"
         },
         {
             "id": 52,
             "content":"make hornet snipe",
             "planet_conditions":["land","naval"],
             "stage_conditions":["midgame","endgame"],
-            "factory_conditions":["air"]
+            "factory_conditions":["air"],
+            "faction":"mla"
         },
         {
             "id": 53,
-            "content":"spam horsefly",
+            "content":"build fab tower per factory",
             "planet_conditions":["land","naval"],
-            "stage_conditions":["midgame","endgame"],
-            "factory_conditions":["air"]
+            "stage_conditions":["modifier"],
+            "factory_conditions":["any"],
+            "faction":"any",
+            "modification":"sw2"
         },
         {
             "id": 54,
-            "content":"no walls",
+            "content":[
+                {"id": 0, "content": "no walls"},
+                {"id": 1, "content": "storages as walls"},
+                {"id": 2, "content": "turrets as walls"}
+            ],
             "planet_conditions":["land","naval"],
             "stage_conditions":["modifier"],
-            "factory_conditions":["any"]
+            "factory_conditions":["any"],
+            "faction":"any"
         },
         {
             "id": 55,
             "content":[
-                {
-                    "id": 100,
-                    "content":"spam dox"
-                },
-                "spam sparks",
-                "spam boombots",
-                "spam grenadiers"
+                "artillery rush",
+                "rocket launchers rush"
             ],
-            "planet_conditions":["land"],
-            "stage_conditions":["earlygame"],
-            "factory_conditions":["bot"]
+            "planet_conditions":["land", "naval"],
+            "stage_conditions":["earlygame","midgame","endgame"],
+            "factory_conditions":["any"],
+            "faction":"any"
         },
         {
             "id": 56,
-            "content":"build tesla coil",
+            "content":"build tesla coils instead energy generators",
             "planet_conditions":["land","naval"],
-            "stage_conditions":["earlygame","midgame","endgame"],
+            "stage_conditions":["earlygame"],
             "factory_conditions":["any"],
-            
             "faction":"mla",
             "modification":"s17"
-        }
-        ,
+        },
         {
             "id": 57,
             "content":[
-                "spam purifiers",
-                {
-                    "id": 100,
-                    "content":"spam peacekeepers"
-                }
+                "spam purgers",
+                "spam peacekeepers",
+                "spam lancers"
             ],
             "planet_conditions":["land"],
             "stage_conditions":["earlygame"],
@@ -527,13 +799,312 @@
 
             "faction":"legion",
             "modification":"legion"
-        }
-        ,
+        },
+        {
+            "id": 58,
+            "content": [
+                "spam enforcers",
+                "spam minimans",
+                "spam necromancers",
+                "spam monstrosity",
+                "spam praetorians"
+            ],
+            "planet_conditions":["land"],
+            "stage_conditions":["midgame"],
+            "factory_conditions":["bot"],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id": 59,
+            "content":[
+                "build thor titan",
+                "spam thor titans"
+            ],
+            "planet_conditions":["land"],
+            "stage_conditions":["endgame"],
+            "factory_conditions":["bot"],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id": 58,
+            "content":[
+                "spam stokes",
+                "spam shanks",
+                "spam corsair",
+                "spam mauls"
+            ],
+            "planet_conditions":["land"],
+            "stage_conditions":["earlygame"],
+            "factory_conditions":["vehicle"],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id": 59,
+            "content":[
+                {"id": 0, "content": "spam havocs"},
+                {"id": 1, "content": "spam scropions"},
+                {"id": 2, "content": "spam deathmarks"},
+                {"id": 3, "content": "spam panzers"},
+                {"id": 4, "content": "spam earthshakers"},
+                {"id": 5, "content": "dont build earthshakers"}
+            ],
+            "planet_conditions":["land"],
+            "stage_conditions":["midgame"],
+            "factory_conditions":["vehicle"],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id": 60,
+            "content":[
+                "spam odin titans",
+                "build odin titan"
+            ],
+            "planet_conditions":["land"],
+            "stage_conditions":["endgame"],
+            "factory_conditions":["vehicle"],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id": 61,
+            "content":[
+                { "id": 0, "content": "spam scythe" },
+                { "id": 1, "content": "spam dauntless" },
+                { "id": 2, "content": "spam novas" }
+            ],
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["earlygame"],
+            "factory_conditions":["air"],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id": 62,
+            "content":[
+                { "id": 0, "content": "spam lockheads" },
+                { "id": 1, "content": "spam salamanders" },
+                { "id": 2, "content": "spam meteors" },
+                { "id": 3, "content": "attempt comet invasion" },
+                { "id": 4, "content": "build comet early" }
+            ],
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["midgame"],
+            "factory_conditions":["air"],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id": 63,
+            "content":[
+                "spam loki titans",
+                "build loki titan"
+            ],
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["endgame"],
+            "factory_conditions":["air"],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id": 64,
+            "content":[
+                "spam catfish",
+                "spam akula",
+                "spam bowhead"
+            ],
+            "planet_conditions":["naval"],
+            "stage_conditions":["earlygame"],
+            "factory_conditions":["naval"],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id": 65,
+            "content":[
+                "spam jaeger",
+                "spam manta",
+                "spam hammerhead",
+                "spam epoch"
+            ],
+            "planet_conditions":["naval"],
+            "stage_conditions":["midgame"],
+            "factory_conditions":["naval"],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id": 66,
+            "content":[
+                "spam aegir titans",
+                "build aegir titan"
+            ],
+            "planet_conditions":["naval"],
+            "stage_conditions":["endgame"],
+            "factory_conditions":["naval"],
+            "faction":"legion",
+            "modification":"s17"
+        },
+        {
+            "id": 67,
+            "content":[
+                "spam floaters",
+                "build 5 big-bills first",
+                "build 5 pineapples first"
+            ],
+            "planet_conditions":["land"],
+            "stage_conditions":["midgame","endgame"],
+            "factory_conditions":["gantry"],
+            "faction":"any",
+            "modification":"s17"
+        },
+        {
+            "id": 68,
+            "content": "produce dox with materializers only",
+            "planet_conditions":["land"],
+            "stage_conditions":["modifier"],
+            "factory_conditions":["any"],
+            "faction":"mla",
+            "modification":"s17"
+        },
+        {
+            "id": 69,
+            "content":"produce dox with lobs only",
+            "planet_conditions":["land"],
+            "stage_conditions":["modifier"],
+            "factory_conditions":["any"],
+            "faction":"mla"
+        },
+        {
+            "id": 70,
+            "content":"produce attack bots with unit canons only",
+            "planet_conditions":["land"],
+            "stage_conditions":["modifier"],
+            "factory_conditions":["bot"],
+            "faction":"mla"
+        },
+        {
+            "id":71,
+            "content":"bot heavy without dox",
+            "planet_conditions":["land"],
+            "stage_conditions":["modifier"],
+            "factory_conditions":["bot"],
+            "faction":"mla"
+        },
+        {
+            "id":72,
+            "content": [
+                "build ragnarok"
+            ],
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["endgame"],
+            "factory_conditions":["any"],
+            "faction":"mla"
+        },
+        {
+            "id":73,
+            "content": [
+                "build holocene"
+            ],
+            "planet_conditions":["land","naval"],
+            "stage_conditions":["endgame"],
+            "factory_conditions":["any"],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id": 74,
+            "content":"build sigma early",
+            "planet_conditions":["any"],
+            "stage_conditions":["endgame"],
+            "factory_conditions":["any"],
+            "faction":"mla",
+            "modification":"s17"
+        },
+        {
+            "id": 75,
+            "content":"build ligma early",
+            "planet_conditions":["any"],
+            "stage_conditions":["endgame"],
+            "factory_conditions":["any"],
+            "faction":"legion",
+            "modification":"s17"
+        },
+        {
+            "id": 76,
+            "content":[
+                "destroy all enemy planets"
+            ],
+            "planet_conditions":["orbital"],
+            "stage_conditions":["modifier"],
+            "factory_conditions":["any"],
+            "faction":"any"
+        },
         {
             "id": -1,
             "content":"copy paste",
             "planet_conditions":[],
-            "stage_conditions":[]
+            "stage_conditions":[],
+            "factory_conditions":[],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id": -1,
+            "content":"copy paste",
+            "planet_conditions":[],
+            "stage_conditions":[],
+            "factory_conditions":[],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id": -1,
+            "content":"copy paste",
+            "planet_conditions":[],
+            "stage_conditions":[],
+            "factory_conditions":[],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id": -1,
+            "content":"copy paste",
+            "planet_conditions":[],
+            "stage_conditions":[],
+            "factory_conditions":[],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id": -1,
+            "content":"copy paste",
+            "planet_conditions":[],
+            "stage_conditions":[],
+            "factory_conditions":[],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id": -1,
+            "content":"copy paste",
+            "planet_conditions":[],
+            "stage_conditions":[],
+            "factory_conditions":[],
+            "faction":"legion",
+            "modification":"legion"
+        },
+        {
+            "id": -1,
+            "content":"copy paste",
+            "planet_conditions":[],
+            "stage_conditions":[],
+            "factory_conditions":[],
+            "faction":"legion",
+            "modification":"legion"
         }
 
 

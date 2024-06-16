@@ -14,12 +14,14 @@ const planet_conditions_EXAMPLE = ["any", "land", "naval", "orbital"]
 const placement_types_EXAMPLE = ["land", "naval", "orbital"]
 const modification_types_EXAMPLE = ["vanilla", "legion", "sw2", "s17"]
 
-handlers.commanders = function (payload){
+const fill_stage_recursion_depth_max = 4
+
+handlers.commanders = function (payload) {
     commanders_PAYLOAD = payload
 
     load_data();
 }
-var commanders_PAYLOAD = null; 
+var commanders_PAYLOAD = null;
 
 //view model setup
 function stratModel() {
@@ -67,7 +69,7 @@ model.processGenerateClick = function () {
 
     var new_strategy = get_new_strategy()
 
-    debug(new_strategy, "new strategy")
+    // debug(new_strategy, "new strategy")
     stratModel.modifiers(new_strategy.modifiers)
     stratModel.earlygame_tasks(new_strategy.earlygame_tasks)
     stratModel.midgame_tasks(new_strategy.midgame_tasks)
@@ -351,7 +353,7 @@ function data_build_items(catalog) {
 
     // remove items that depend on modifications that player does not have
     catalog.items = _.filter(catalog.items, function (item) {
-        return item.modification == 'vanilla' || _.includes(player_modifications, item.modification) 
+        return item.modification == 'vanilla' || _.includes(player_modifications, item.modification)
     })
 }
 
@@ -472,7 +474,7 @@ function get_new_strategy() {
     var midgame_tasks_count = get_random_value_inclusive(1, catalog.max_midgame_count)
     var endgame_tasks_count = get_random_value_inclusive(1, catalog.max_endgame_count)
 
-
+    var fill_stages_recursion_depth = 0
 
     var items_copy = catalog.items.slice()
     // remove unused items with id = -1
@@ -513,7 +515,7 @@ function get_new_strategy() {
         }
     ]
 
-    var earlygame_factories_order_length = get_random_value_by_weight(earlygame_factories_order_lengths,"weight").value.value
+    var earlygame_factories_order_length = get_random_value_by_weight(earlygame_factories_order_lengths, "weight").value.value
     var earlygame_factories_order = get_factories_order(planet_conditions, 1,
         earlygame_factories_order_length, true
     )
@@ -521,69 +523,116 @@ function get_new_strategy() {
         2, false
     )
 
+
+    var modifiers = []
+    var earlygame_tasks = []
+    var midgame_tasks = []
+    var endgame_tasks = []
+
     // GENERATE GAME STAGES
+    function fill_stages_LOCAL() {
+        fill_stages_recursion_depth ++;
+        // PREVENT DEADLOCK
+        if(fill_stages_recursion_depth > fill_stage_recursion_depth_max){
+            return
+        }
+        if (_.isEmpty(modifiers)) {
+            modifiers = get_multiple_random_array_values_by_weight(
+                _.filter(items_copy, function (x) {
+                    return does_item_match_conditions(
+                        planet_conditions, ["modifier"],
+                        // merged earlygame and midgame factory types
+                        earlygame_factories_order.types.concat(midgame_factories_order.types),
+                        x);
+                }),
+                modifiers_count, "weight")
+            // remove selected items by filter
+            items_copy = _.filter(items_copy, function (x) {
+                return !_.includes(modifiers, x);
+            });
+        }
 
-    var modifiers = get_multiple_random_array_values_by_weight(
-        _.filter(items_copy, function (x) {
-            return does_item_match_conditions(
-                planet_conditions, ["modifier"],
-                // merged earlygame and midgame factory types
-                earlygame_factories_order.types.concat(midgame_factories_order.types),
-                x);
-        }),
-        modifiers_count, "weight")
-    // remove selected items by filter
-    items_copy = _.filter(items_copy, function (x) {
-        return !_.includes(modifiers, x);
-    });
+        if (_.isEmpty(earlygame_tasks)) {
+            // EARLYGAME
+            earlygame_tasks = get_multiple_random_array_values_by_weight(
+                _.filter(items_copy, function (x) {
+                    return does_item_match_conditions(
+                        planet_conditions, ["earlygame"],
+                        earlygame_factories_order.types,
+                        x);
+                }),
+                earlygame_tasks_count, "weight")
+            items_copy = _.filter(items_copy, function (x) {
+                return !_.includes(earlygame_tasks, x);
+            });
+        }
 
-    // EARLYGAME
-    var earlygame_tasks = get_multiple_random_array_values_by_weight(
-        _.filter(items_copy, function (x) {
-            return does_item_match_conditions(
-                planet_conditions, ["earlygame"],
-                earlygame_factories_order.types,
-                x);
-        }),
-        earlygame_tasks_count, "weight")
-    items_copy = _.filter(items_copy, function (x) {
-        return !_.includes(earlygame_tasks, x);
-    });
+        if (_.isEmpty(midgame_tasks)) {
+            // MIDGAME
+            midgame_tasks = get_multiple_random_array_values_by_weight(
+                _.filter(items_copy, function does_item_match_conditions_midgame(x) {
+                    return does_item_match_conditions(planet_conditions, ["midgame"],
+                        midgame_factories_order.types,
+                        x);
+                }),
+                midgame_tasks_count, "weight")
+            items_copy = _.filter(items_copy, function (x) {
+                return !_.includes(midgame_tasks, x);
+            });
+        }
 
-    // MIDGAME
-    var midgame_tasks = get_multiple_random_array_values_by_weight(
-        _.filter(items_copy, function does_item_match_conditions_midgame(x) {
-            return does_item_match_conditions(planet_conditions, ["midgame"],
-                midgame_factories_order.types,
-                x);
-        }),
-        midgame_tasks_count, "weight")
-    items_copy = _.filter(items_copy, function (x) {
-        return !_.includes(midgame_tasks, x);
-    });
+        if (_.isEmpty(endgame_tasks)) {
+            // ENDGAME
+            endgame_tasks = get_multiple_random_array_values_by_weight(
+                _.filter(items_copy, function does_item_match_conditions_endgame(x) {
+                    return does_item_match_conditions(planet_conditions, ["endgame"],
+                        ["any"], x);
+                }),
+                endgame_tasks_count, "weight")
+            items_copy = _.filter(items_copy, function (x) {
+                return !_.includes(endgame_tasks, x);
+            });
+        }
 
-    // ENDGAME
-    var endgame_tasks = get_multiple_random_array_values_by_weight(
-        _.filter(items_copy, function does_item_match_conditions_endgame(x) {
-            return does_item_match_conditions(planet_conditions, ["endgame"],
-                ["any"], x);
-        }),
-        endgame_tasks_count, "weight")
+        var result = resolve_conflicting_items(
+            [
+                modifiers,
+                earlygame_tasks,
+                midgame_tasks,
+                endgame_tasks
+            ]
+        )
 
-    var result = resolve_conflicting_items(
-        [
-            modifiers,
-            earlygame_tasks,
-            midgame_tasks,
-            endgame_tasks
-        ]
-    )
+        modifiers = result.items[0]
+        earlygame_tasks = result.items[1]
+        midgame_tasks = result.items[2]
+        endgame_tasks = result.items[3]
+        var removed_items_ids = result.removed_items_ids
+
+        // IF SOME STAGES IS EMPTY
+        if (
+            modifiers.length == 0
+            || earlygame_tasks.length == 0
+            || midgame_tasks.length == 0
+            || endgame_tasks.length == 0
+        ) {
+            // exclude removed by id items form items_copy
+            items_copy = _.filter(items_copy, function (x) {
+                return !_.includes(removed_items_ids, x.id);
+            });
+
+            fill_stages_LOCAL()
+        }
+
+    }
+
+    fill_stages_LOCAL()
 
     return {
-        modifiers: result[0],
-        earlygame_tasks: result[1],
-        midgame_tasks: result[2],
-        endgame_tasks: result[3],
+        modifiers: modifiers,
+        earlygame_tasks: earlygame_tasks,
+        midgame_tasks: midgame_tasks,
+        endgame_tasks: endgame_tasks,
 
         earlygame_factories: earlygame_factories_order.factories,
         midgame_factories: midgame_factories_order.factories
@@ -627,7 +676,7 @@ function get_selected_planet_conditions() {
 function get_factories_order(planet_conditions, tier, order_length, allow_same) {
     var factories_copy = catalog.factories.slice()
 
-    debug(factories_copy, "factories_copy")
+    // debug(factories_copy, "factories_copy")
 
     // FILTER FACTORIES
     // remove all factories that are not the selected tier
@@ -639,14 +688,13 @@ function get_factories_order(planet_conditions, tier, order_length, allow_same) 
         return _.includes(player_factions, x.faction) || x.faction == "any";
     })
 
-    var exclude_air_factories = 0;
 
     // remove all land factories if land is not selected
     if (!_.includes(planet_conditions, "land")) {
-        exclude_air_factories++;
         // console.log("land not selected")
         factories_copy = _.filter(factories_copy, function (factory_item) {
             if (factory_item.placement.length > 1 && _.includes(factory_item.placement, "land")) {
+                // removing placement entry item if entry like ["land","naval"]
                 factory_item.placement = _.filter(factory_item.placement, function (placement_item) {
                     return placement_item != "land";
                 })
@@ -659,11 +707,10 @@ function get_factories_order(planet_conditions, tier, order_length, allow_same) 
     }
 
     if (!_.includes(planet_conditions, "naval")) {
-        exclude_air_factories++;
         factories_copy = _.filter(factories_copy, function (factory_item) {
             if (factory_item.placement.length > 1 && _.includes(factory_item.placement, "naval")) {
                 factory_item.placement = _.filter(factory_item.placement, function (placement_item) {
-                    return placement_item != "land";
+                    return placement_item != "naval";
                 })
                 // this factory will be excluded in the next steps
                 return true;
@@ -677,7 +724,7 @@ function get_factories_order(planet_conditions, tier, order_length, allow_same) 
         factories_copy = _.filter(factories_copy, function (factory_item) {
             if (factory_item.placement.length > 1 && _.includes(factory_item.placement, "orbital")) {
                 factory_item.placement = _.filter(factory_item.placement, function (placement_item) {
-                    return placement_item != "land";
+                    return placement_item != "orbital";
                 })
                 // this factory will be excluded in the next steps
                 return true;
@@ -687,7 +734,7 @@ function get_factories_order(planet_conditions, tier, order_length, allow_same) 
         });
     }
 
-    // debug(factories_copy)
+    debug(factories_copy, "factories_copy")
 
     // GENERATE ORDER
     var factory_order = {
@@ -710,7 +757,7 @@ function get_factories_order(planet_conditions, tier, order_length, allow_same) 
         if (i == 0) {
             factory = get_random_value_by_weight(factories_copy, "pick_first_weight").value
         } else {
-            factory = get_random_array_value(factories_copy).value
+            factory = get_random_value_by_weight(factories_copy, "weight").value
         }
 
         // push new factory in order
@@ -834,15 +881,11 @@ function does_item_match_faction_condition(item) {
     return item.faction == "any" || _.includes(player_factions, item.faction)
 }
 
-/**
- * Resolves conflicts between items in the given arrays of items.
- *
- * @param {Array<Array<Object>>} items_arrays - An array of arrays of items, where each item is an object with an 'id' property.
- * @return {Array<Array<Object>>} The modified array of arrays of items, with conflicting items removed.
- */
+
 function resolve_conflicting_items(items_arrays) {
     // copy arrays to not modify original arrays
     var items_arrays = items_arrays.slice()
+    var removed_items_ids = []
     // each conflict group contains two arrays (left,right)
     // for each conflict group we should look at the left and right arrays
     // if items_array contains an item that matches any side of conflict group
@@ -850,36 +893,60 @@ function resolve_conflicting_items(items_arrays) {
 
     // items does not have priority so first item we look at is prioritized
 
-    var conflict_groups = catalog.conflict_groups
+    var conflict_groups = catalog.conflict_groups.slice()
 
     for (var i = 0; i < conflict_groups.length; i++) {
         var conflict_group = conflict_groups[i]
-        var left = conflict_group.left
-
-        // ITERATE LEFT ARRAY
-        for (var j = 0; j < left.length; j++) {
-            var id = left[j]
-
-            // group contains parent item id so we should look for its children instead
-            if (id < content_nested_id_multiplier) {
-                var children_items = find_children_items_LOCAL(id)
-                if (children_items.length > 0) {
-                    // items contains any of children items so we should remove conflicts from right array
-                    remove_items_LOCAL(conflict_groups.right)
+        if (conflict_group.row != undefined) {
+            var row = conflict_group.row
+            for (var j = 0; j < row.length; j++) {
+                var id = row[j]
+                if (find_item_LOCAL(id) != undefined) {
+                    // debug(row,"row before splice")
+                    row.splice(j, 1)
+                    // debug(row,"row after splice")
+                    debug(row, "remove row")
+                    remove_items_by_ids_LOCAL(row)
                     break
-                } else {
-                    continue
                 }
-            } else if (find_item_LOCAL(id) != undefined) {
-                remove_items_LOCAL(conflict_group.right)
-                // if we removed all conflict for a single item in group we can break
-                // to not iterate through the rest of the conflict group
-                break
+            }
+        } else {
+            var left = conflict_group.left
+            // ITERATE LEFT ARRAY
+            for (var j = 0; j < left.length; j++) {
+                var id = left[j]
+
+
+                if (id < content_nested_id_multiplier) {
+                    var left_group_item = find_item_LOCAL(id)
+                    if (left_group_item != undefined) {
+                        remove_items_by_ids_LOCAL(conflict_group.right)
+                        break
+                    } else {
+                        // group contains parent item id so we should look for its children instead
+                        var children_items = find_children_items_by_parent_id_LOCAL(id)
+                        // we found childrens in left group
+                        if (children_items.length > 0) {
+                            remove_items_by_ids_LOCAL(conflict_group.right)
+                            break
+                        } else {
+                            continue
+                        }
+                    }
+                } else if (find_item_LOCAL(id) != undefined) {
+                    debug("remove right ")
+                    remove_items_by_ids_LOCAL(conflict_group.right)
+                    // if we removed all conflict for a single item in group we can break
+                    // to not iterate through the rest of the conflict group
+                    break
+                }
             }
         }
+
+
     }
 
-    return items_arrays
+    return { items: items_arrays, removed_items_ids: removed_items_ids }
 
     /**
     * Search for an item by its ID in the items arrays.
@@ -901,7 +968,7 @@ function resolve_conflicting_items(items_arrays) {
         return undefined
     }
 
-    function find_children_items_LOCAL(parent_id) {
+    function find_children_items_by_parent_id_LOCAL(parent_id) {
         var children_items = []
 
         for (var i = 0; i < items_arrays.length; i++) {
@@ -921,27 +988,37 @@ function resolve_conflicting_items(items_arrays) {
         return children_items
     }
 
-    function remove_items_LOCAL(ids) {
+    function remove_items_by_ids_LOCAL(ids) {
         for (var i = 0; i < ids.length; i++) {
 
-            var item_id = ids[i]
+            var remove_item_id = ids[i]
 
-            if (item_id < content_nested_id_multiplier) {
-                var children_item_ids = find_children_items_LOCAL(item_id)
-                if (children_item_ids.length > 0) {
-                    remove_items_LOCAL(children_item_ids)
+            if (remove_item_id < content_nested_id_multiplier) {
+                var parent_item = find_item_LOCAL(remove_item_id)
+                if (parent_item != undefined) {
+                    // that means parent does not have content property as array,
+                    // just single string entry
+                    remove_item_by_id_LOCAL(parent_item.id)
+                } else {
+                    var children_items = find_children_items_by_parent_id_LOCAL(remove_item_id)
+                    if (children_items.length > 0) {
+                        debug(children_items, "children_items")
+                        remove_items_by_ids_LOCAL(_.map(children_items, function (item) { return item.id }))
+                    }
                 }
             } else {
-                remove_item_LOCAL(item_id)
+                remove_item_by_id_LOCAL(remove_item_id)
             }
         }
     }
 
-    function remove_item_LOCAL(id) {
+    function remove_item_by_id_LOCAL(id) {
         for (var i = 0; i < items_arrays.length; i++) {
             for (var j = 0; j < items_arrays[i].length; j++) {
                 if (items_arrays[i][j].id == id) {
+                    debug(items_arrays[i][j], "remove item")
                     items_arrays[i].splice(j, 1)
+                    removed_items_ids.push(id)
                 }
             }
         }
