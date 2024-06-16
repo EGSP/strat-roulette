@@ -1,4 +1,4 @@
-const data_folder_path = 'coui://ui/mods/mod.roulette/data/';
+const data_folder_path = 'coui://ui/mods/mod.skilltest/data/';
 
 const legion_commanders_catalog = [
     "/pa/units/commanders/l_overwatch/l_overwatch.json",
@@ -51,10 +51,10 @@ model.stratLockEvent = function () {
     common_button_actions()
 
     if (localStorage["frames_strat_frame_lockStatus"] == "true") {
-        $("#strat_lock").attr("src", "coui://ui/mods/mod.roulette/img/unlock.png");
+        $("#strat_lock").attr("src", "coui://ui/mods/mod.skilltest/img/unlock.png");
         unlockFrame("strat_frame");
     } else {
-        $("#strat_lock").attr("src", "coui://ui/mods/mod.roulette/img/lock.png");
+        $("#strat_lock").attr("src", "coui://ui/mods/mod.skilltest/img/lock.png");
         lockFrame("strat_frame");
     }
 
@@ -86,9 +86,9 @@ model.toggleStratUIExpanded = function () {
 
     stratUIExpanded(!stratUIExpanded())
     if (stratUIExpanded() == true) {
-        $("#strat_visible").attr("src", "coui://ui/mods/mod.roulette/img/visible.png");
+        $("#strat_visible").attr("src", "coui://ui/mods/mod.skilltest/img/visible.png");
     } else {
-        $("#strat_visible").attr("src", "coui://ui/mods/mod.roulette/img/notVisible.png");
+        $("#strat_visible").attr("src", "coui://ui/mods/mod.skilltest/img/notVisible.png");
 
     }
 }
@@ -166,9 +166,9 @@ model.toggleLand = function () {
     stratModel.land(!value)
     // console.log(stratModel.land())
     if (stratModel.land() == true) {
-        $("#land-button-img").attr("src", "coui://ui/mods/mod.roulette/img/land.png");
+        $("#land-button-img").attr("src", "coui://ui/mods/mod.skilltest/img/land.png");
     } else {
-        $("#land-button-img").attr("src", "coui://ui/mods/mod.roulette/img/land-no.png");
+        $("#land-button-img").attr("src", "coui://ui/mods/mod.skilltest/img/land-no.png");
     }
 
 }
@@ -186,9 +186,9 @@ model.toggleNaval = function () {
     stratModel.naval(!value)
     // console.log(stratModel.naval())
     if (stratModel.naval() == true) {
-        $("#naval-button-img").attr("src", "coui://ui/mods/mod.roulette/img/ship.png");
+        $("#naval-button-img").attr("src", "coui://ui/mods/mod.skilltest/img/ship.png");
     } else {
-        $("#naval-button-img").attr("src", "coui://ui/mods/mod.roulette/img/ship-no.png");
+        $("#naval-button-img").attr("src", "coui://ui/mods/mod.skilltest/img/ship-no.png");
     }
 
 }
@@ -206,9 +206,9 @@ model.toggleOrbital = function () {
     stratModel.orbital(!value)
     console.log(stratModel.orbital())
     if (stratModel.orbital() == true) {
-        $("#orbital-button-img").attr("src", "coui://ui/mods/mod.roulette/img/planet.png");
+        $("#orbital-button-img").attr("src", "coui://ui/mods/mod.skilltest/img/planet.png");
     } else {
-        $("#orbital-button-img").attr("src", "coui://ui/mods/mod.roulette/img/planet-no.png");
+        $("#orbital-button-img").attr("src", "coui://ui/mods/mod.skilltest/img/planet-no.png");
     }
 
 }
@@ -1043,6 +1043,6 @@ function common_button_actions() {
 createFloatingFrame("strat_frame", 'auto', 'auto', { "offset": "topRight", "left": -240 });
 
 //attaches the html to the frame
-$.get("coui://ui/mods/mod.roulette/floatzone/strat.html", function (html) {
+$.get("coui://ui/mods/mod.skilltest/floatzone/strat.html", function (html) {
     $("#strat_frame_content").append(html);
 })

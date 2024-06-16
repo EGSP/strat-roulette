@@ -8,7 +8,7 @@
         <title>Effect Testing UI</title>
     </noloc>
     <!--<link href="bundle://boot/boot.css" rel="stylesheet" type="text/css" />-->
-    <link href="coui://ui/mods/mod.roulette/floatzone/strat.css" rel="stylesheet" type="text/css" />
+    <link href="coui://ui/mods/mod.skilltest/floatzone/strat.css" rel="stylesheet" type="text/css" />
     <!--<script src="bundle://boot/boot.js" type="text/javascript"></script>-->
 </head>
 
@@ -21,7 +21,7 @@
                 <div class="pseudo-button" data-bind="tooltip: '!LOC:Drag to move frame', 
                 click_sound: 'default',
                 rollover_sound: 'default'" data-placement="right">
-                    <img class="mini" src='coui://ui/mods/mod.roulette/img/drag.png' />
+                    <img class="mini" src='coui://ui/mods/mod.skilltest/img/drag.png' />
                 </div>
 
                 <button class="quad common btn-default" id="generateStrat" onclick="model.stratLockEvent()"
@@ -44,31 +44,31 @@
                     data-bind="tooltip: '!LOC:Make new strategy', 
                     click_sound: 'default',
                     rollover_sound: 'default'" data-placement="right">
-                    <img class="mini" src='coui://ui/mods/mod.roulette/img/dice.png' />
+                    <img class="mini" src='coui://ui/mods/mod.skilltest/img/dice.png' />
                 </button>
 
                 <hr class="invisible" />
                 <button class="quad common btn-default" onclick="model.toggleLand()" data-bind="tooltip: '!LOC:Add land factories to strategy', 
                     click_sound: 'default',
                     rollover_sound: 'default'" data-placement="right">
-                    <img id="land-button-img" class="mini" src='coui://ui/mods/mod.roulette/img/land.png' />
+                    <img id="land-button-img" class="mini" src='coui://ui/mods/mod.skilltest/img/land.png' />
                 </button>
                 <button class="quad common btn-default" onclick="model.toggleNaval()" data-bind="tooltip: '!LOC:Add naval factories to strategy', 
                     click_sound: 'default',
                     rollover_sound: 'default'" data-placement="right">
-                    <img id="naval-button-img" class="mini" src='coui://ui/mods/mod.roulette/img/ship-no.png' />
+                    <img id="naval-button-img" class="mini" src='coui://ui/mods/mod.skilltest/img/ship-no.png' />
                 </button>
                 <button class="quad common btn-default" onclick="model.toggleOrbital()" data-bind="tooltip: '!LOC:Add orbital factories to strategy', 
                     click_sound: 'default',
                     rollover_sound: 'default'" data-placement="right">
-                    <img id="orbital-button-img" class="mini" src='coui://ui/mods/mod.roulette/img/planet-no.png' />
+                    <img id="orbital-button-img" class="mini" src='coui://ui/mods/mod.skilltest/img/planet-no.png' />
                 </button>
 
                 <hr class="invisible" />
                 <button class="quad common btn-default" onclick="model.openDiscord()" data-bind="tooltip: '!LOC:Leave feedback here!', 
                     click_sound: 'default',
                     rollover_sound: 'default'" data-placement="right">
-                    <img class="mini" src='coui://ui/mods/mod.roulette/img/discord.png' />
+                    <img class="mini" src='coui://ui/mods/mod.skilltest/img/discord.png' />
                 </button>
 
                 <!-- REMOVED THIS BUTTON CAUSE OF VISUAL COHESION: TOOLTIPS ALIGHN, SHOW/HIDE PLACEMENT -->
@@ -77,7 +77,7 @@
                 <button class="quad common btn-default" onclick="model.toggleSwitch()" data-bind="tooltip: '!LOC:Switch frame orientation', 
                     click_sound: 'default',
                     rollover_sound: 'default'" data-placement="right">
-                    <img class="mini" src='coui://ui/mods/mod.roulette/img/switch.png' />
+                    <img class="mini" src='coui://ui/mods/mod.skilltest/img/switch.png' />
                 </button> -->
             </div>
 
@@ -103,7 +103,7 @@
 
                         <div class="tasks" data-bind="foreach: modifiers">
                             <div>
-                                <img class="micro" src="coui://ui/mods/mod.roulette/img/plan.png" />
+                                <img class="micro" src="coui://ui/mods/mod.skilltest/img/plan.png" />
                                 <span class="text-accent" data-bind="text: loc(content)"></span>
                             </div>
                         </div>
@@ -124,12 +124,12 @@
                             </div>
                             <div data-bind="if: $index() < ($parent.earlygame_factories().length - 1)">
                                 <img class="factory-entry-arrow-small"
-                                    src="coui://ui/mods/mod.roulette/img/arrow-right.png" />
+                                    src="coui://ui/mods/mod.skilltest/img/arrow-right.png" />
                             </div>
                         </div>
                         <div class="tasks" data-bind="foreach: earlygame_tasks">
                             <div>
-                                <img class="micro" src="coui://ui/mods/mod.roulette/img/mark.png" />
+                                <img class="micro" src="coui://ui/mods/mod.skilltest/img/mark.png" />
                                 <span class="text-accent" data-bind="text: loc(content)"></span>
                             </div>
                         </div>
@@ -149,12 +149,12 @@
                             </div>
                             <div data-bind="if: $index() < ($parent.midgame_factories().length - 1)">
                                 <img class="factory-entry-arrow"
-                                    src="coui://ui/mods/mod.roulette/img/arrow-right.png" />
+                                    src="coui://ui/mods/mod.skilltest/img/arrow-right.png" />
                             </div>
                         </div>
                         <div class="tasks" data-bind="foreach: midgame_tasks">
                             <div>
-                                <img class="micro" src="coui://ui/mods/mod.roulette/img/mark.png" />
+                                <img class="micro" src="coui://ui/mods/mod.skilltest/img/mark.png" />
                                 <span class="text-accent" data-bind="text: loc(content)"></span>
                             </div>
                         </div>
@@ -168,7 +168,7 @@
                         </h10>
                         <div class="tasks" data-bind="foreach: endgame_tasks">
                             <div>
-                                <img class="micro" src="coui://ui/mods/mod.roulette/img/mark.png" />
+                                <img class="micro" src="coui://ui/mods/mod.skilltest/img/mark.png" />
                                 <span class="text-accent" data-bind="text: loc(content)"></span>
                             </div>
                         </div>
@@ -183,7 +183,7 @@
 
 </body>
 <script>
-    $("#generateStrat").attr("src", "coui://ui/mods/mod.roulette/img/replay.png");
+    $("#generateStrat").attr("src", "coui://ui/mods/mod.skilltest/img/replay.png");
 
     ko.cleanNode(document.getElementById("content-viewport"));
     ko.applyBindings(stratModel, document.getElementById("content-viewport"));
@@ -191,15 +191,15 @@
     ko.applyBindings(stratModel, document.getElementById("buttons-secondary"));
 
     if (localStorage["frames_strat_frame_lockStatus"] == "true") {
-        $("#strat_lock").attr("src", "coui://ui/mods/mod.roulette/img/lock.png");
+        $("#strat_lock").attr("src", "coui://ui/mods/mod.skilltest/img/lock.png");
     } else {
-        $("#strat_lock").attr("src", "coui://ui/mods/mod.roulette/img/unlock.png");
+        $("#strat_lock").attr("src", "coui://ui/mods/mod.skilltest/img/unlock.png");
     }
 
     if (stratUIExpanded() == true) {
-        $("#strat_visible").attr("src", "coui://ui/mods/mod.roulette/img/visible.png");
+        $("#strat_visible").attr("src", "coui://ui/mods/mod.skilltest/img/visible.png");
     } else {
-        $("#strat_visible").attr("src", "coui://ui/mods/mod.roulette/img/notVisible.png");
+        $("#strat_visible").attr("src", "coui://ui/mods/mod.skilltest/img/notVisible.png");
 
     }
 

@@ -1,7 +1,7 @@
-console.log("ui/mods/mod.roulette/hook.js: ini")
+console.log("ui/mods/mod.skilltest/hook.js: ini")
 
 $(document).ready(function () {
-    console.log("ui/mods/mod.roulette/hook.js: ready")
+    console.log("ui/mods/mod.skilltest/hook.js: ready")
     console.log(model.player().commanders)
 
 
